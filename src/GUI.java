@@ -5,7 +5,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.event.DocumentEvent;
@@ -154,19 +153,21 @@ public class GUI implements ActionListener {
 		ToolTipManager.sharedInstance().setInitialDelay(Settings.tooltipInitialDelay);
 		ToolTipManager.sharedInstance().setDismissDelay(Settings.tooltipDismissDelay);
 		
-		create = new JButton(new ImageIcon("src/gfx/new.png"));
+		JOptionPane.setDefaultLocale(Settings.language);
+		
+		create = new JButton(new ImageIcon(Main.class.getResource("/gfx/new.png")));
 		create.addActionListener(this);
 		
-		save = new JButton(new ImageIcon("src/gfx/save.png"));
+		save = new JButton(new ImageIcon(Main.class.getResource("/gfx/save.png")));
 		save.addActionListener(this);
 		
-		open = new JButton(new ImageIcon("src/gfx/open.png"));
+		open = new JButton(new ImageIcon(Main.class.getResource("/gfx/open.png")));
 		open.addActionListener(this);
 		
-		export = new JButton(new ImageIcon("src/gfx/export.png"));
+		export = new JButton(new ImageIcon(Main.class.getResource("/gfx/export.png")));
 		export.addActionListener(this);
 		
-		settings = new JButton(new ImageIcon("src/gfx/settings.png"));
+		settings = new JButton(new ImageIcon(Main.class.getResource("/gfx/settings.png")));
 		settings.addActionListener(this);
 		
 		screenplayEditorButton = new JButton();
@@ -217,7 +218,7 @@ public class GUI implements ActionListener {
 		statusbar.add(status);
 		
 		window = new JFrame(Settings.versionStr);
-		window.setIconImage(Toolkit.getDefaultToolkit().createImage("src/gfx/logo.png"));
+		window.setIconImage(Toolkit.getDefaultToolkit().createImage(Main.class.getResource("/gfx/logo.png")));
 		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		window.setBounds(x, y, preview.getSize().width, height);
 		window.setMinimumSize(new Dimension(preview.getMinimumSize().width + 32, 100));

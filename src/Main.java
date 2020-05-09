@@ -7,8 +7,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
-
-import javax.swing.JOptionPane;
 import javax.xml.*;
 import javax.xml.parsers.*;
 import javax.xml.transform.*;
@@ -61,14 +59,10 @@ public class Main {
 			saveSettings();
 		}
 		
-		else {
-			
-			loadSettings();
-		}
+		loadSettings();
 		
 		Settings.localisation = ResourceBundle.getBundle(Settings.baseBundleName);
 		Locale.setDefault(Settings.language);
-		JOptionPane.setDefaultLocale(Settings.language);
 
 		schemaFile = new File("screenplay.xsd");
 		saved = true;
