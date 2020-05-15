@@ -18,12 +18,9 @@ import org.xml.sax.SAXException;
 
 public class Main {
 	
-	// TODO more scene elements: subheader, transition, intercut
-	// TODO edit/rename locations, characters
-	
 	public static GUI gui;
 	public static boolean saved;
-	public static File currentFile, schemaFile, errorLog, validationLog;
+	public static File currentFile, schemaFile, settingsFile, errorLog, validationLog;
 	public static File[] files;
 	public static SchemaFactory schemaFactory;
 	public static Schema schema;
@@ -36,6 +33,10 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
+		
+		
+		
+			// LOGS
 		
 		try {
 			
@@ -54,21 +55,71 @@ public class Main {
 		
 		
 		
-		if (!new File("settings").exists()) {
+			// SETTINGS
+		
+		settingsFile = new File(Settings.rootPath, Settings.settingsFile);
+		
+		if (!settingsFile.exists()) {
 			
 			saveSettings();
 		}
 		
 		loadSettings();
 		
+		
+		
+			// LOCALISATION
+		
 		Settings.localisation = ResourceBundle.getBundle(Settings.baseBundleName);
 		Locale.setDefault(Settings.language);
-
-		schemaFile = new File("screenplay.xsd");
-		saved = true;
+		
+		
+		
+			// GUI
 		
 		gui = new GUI();
 		gui.refreshToolbar();
+		
+		
+		
+			// UPDATE
+		
+		try {
+			
+			File tmpSrc = new File (Settings.rootPath, Settings.tmpFile + ".java");
+			File tmpClass = new File (Settings.rootPath, Settings.tmpFile + ".class");
+			File tmpDir = new File (Settings.rootPath, "tmp");
+			
+			if (tmpSrc.exists()) {
+				
+				tmpSrc.delete();
+			}
+			
+			if (tmpClass.exists()) {
+				
+				tmpClass.delete();
+			}
+			
+			if (tmpDir.exists()) {
+				
+				tmpClass.delete();
+			}
+		}
+		
+		catch (Exception e) {
+			
+			log(errorLog, e);
+		}
+		
+		Updater.refresh();
+		if (Updater.check()) gui.dialogUpdate();
+		
+		
+		
+			// SCHEMA
+
+		schemaFile = new File(Settings.rootPath, Settings.schemaFile);
+		saved = true;
 		
 		try {
 			
@@ -152,7 +203,7 @@ public class Main {
 		
 		try {
 		
-			FileInputStream input = new FileInputStream("settings");
+			FileInputStream input = new FileInputStream(settingsFile);
 			Properties settings = new Properties();
 			
 			try {
@@ -198,7 +249,7 @@ public class Main {
 		
 		try {
 		
-			FileOutputStream output = new FileOutputStream("settings");
+			FileOutputStream output = new FileOutputStream(settingsFile);
 			
 			try {
 				
@@ -432,8 +483,6 @@ public class Main {
 		try {
 			
 			validator.validate(new DOMSource(document));
-			
-			// TODO code improvement
 			
 			List<Element> scenes = Arrays.asList(getElements(document, "scene", null));
 			List<Element> locations = Arrays.asList(getElements(document, "location", null));

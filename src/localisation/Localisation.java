@@ -32,6 +32,7 @@ public class Localisation extends ListResourceBundle {
 			{"DLG_SCENE_EDITOR", "Scene Editor"},
 			{"DLG_SCREENPLAY_EDITOR", "Screenplay Editor"},
 			{"DLG_SETTINGS", "Settings"},
+			{"DLG_UPDATE", "Update"},
 			{"DLG_WARNING", "Warning"},
 			
 			{"ERR_ADD_ELEMENT", "Due to an error, the element could not be added.\nFor further information, please check the error log and contact the developer."},
@@ -120,6 +121,8 @@ public class Localisation extends ListResourceBundle {
 			{"TT_MOVE_SCENE_ELEMENT_NOTHING_SELECTED", "No scene element selected."},
 			{"TT_REMOVE_SCENE_ELEMENT", "Remove the selected element from the scenen."},
 			{"TT_REMOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Select the scene element you want to remove."},
+			
+			{"UPDATE_AVAILABLE", "A new update is available. Would you like it to be installed?"}
 		};
 	}
 }

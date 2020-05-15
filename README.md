@@ -25,8 +25,10 @@ Just click on _Gidoi.exe_ (Windows) or _Gidoi.jar_ and the application should in
 
 ## Development tools
 * IDE: [Eclipse](https://www.eclipse.org/)
+* Git tool: [JGit](https://www.eclipse.org/jgit/)
 * Build tool: [Maven](https://maven.apache.org/)
 * PDF tool: [PDFBox](https://pdfbox.apache.org/)
+* EXE wrapper: [JSmooth](http://jsmooth.sourceforge.net/)
 
 ## License
 This project is licensed under the [MIT license](https://choosealicense.com/licenses/mit/). For further information check the [LICENSE.md](LICENSE.md) file.
@@ -36,12 +38,12 @@ The main purpose of this project is to create a software that supports screenwri
  
 ## Goals
 The following goals represent the desired characteristics of the program.
-* __Complexity__ - May it be more than a simple editor.
-* __Universality__ - May it be useful for any kind of screenplay.
-* __Intuitivity__ - May it be easy to use for everyone.
+* __Complexity__ - More than a simple editor.
+* __Universality__ - Useful for any kind of screenplay.
+* __Intuitivity__ - Easy to use for everyone.
 
 ## Authors
 * Teo Förste
 
 ## Appreciation
-Many thanks to all testers who have significantly contributed to the development of this software through their detailed and constructive feedback.
+Many thanks to all testers for significantly contributing to the development of this software through detailed and constructive feedback. Further appreciation goes to all documentations, tutorials and forums that helped me find my way through unknown territory.

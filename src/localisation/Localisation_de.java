@@ -29,6 +29,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"DLG_SCENE_EDITOR", "Szeneneditor"},
 			{"DLG_SCREENPLAY_EDITOR", "Drehbucheditor"},
 			{"DLG_SETTINGS", "Einstellungen"},
+			{"DLG_UPDATE", "Update"},
 			{"DLG_WARNING", "Warnung"},
 			
 			{"ERR_ADD_ELEMENT", "Aufgrund eines Fehlers konnte das Element nicht hinzugefügt werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
@@ -117,6 +118,8 @@ public class Localisation_de extends ListResourceBundle {
 			{"TT_MOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie verschieben möchten."},
 			{"TT_REMOVE_SCENE_ELEMENT", "Entfernen Sie das ausgewählte Element aus der Szene."},
 			{"TT_REMOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie entfernen möchten."},
+		
+			{"UPDATE_AVAILABLE", "Ein neues Update ist verfügbar. Soll es installiert werden?"}
 		};
 	}
 }
