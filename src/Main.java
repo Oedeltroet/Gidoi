@@ -36,6 +36,63 @@ public class Main {
 		
 		
 		
+			// TMP FILES
+		
+		try {
+			
+			String path = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getAbsolutePath();
+			
+			File tmpFile = 
+					
+				System.getProperty("os.name").toLowerCase().startsWith("linux")
+				
+					? new File(path, Settings.tmpFile + ".sh")
+					: new File(Settings.tmpFile + ".bat");
+			
+			if (tmpFile.exists()) {
+				
+				tmpFile.delete();
+			}
+			
+			
+			
+				// LINUX COMPATIBILITY
+			
+			if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+				
+				if (!System.getProperty("user.dir").equals(path)) {
+				
+					try {
+						
+						FileOutputStream output = new FileOutputStream(tmpFile);
+						output.write(("#!/bin/sh\ncd " + path + "\njava -jar Gidoi.jar").getBytes());
+						output.close();
+						
+						tmpFile.setExecutable(true);
+
+						new ProcessBuilder(tmpFile.toURI().getPath()).start();
+					}
+					
+					catch (Exception e) {
+						
+						e.printStackTrace();
+					}
+					
+					finally {
+						
+						System.exit(0);
+					}
+				}
+			}
+		}
+		
+		catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		
 			// LOGS
 		
 		try {
@@ -57,7 +114,7 @@ public class Main {
 		
 			// SETTINGS
 		
-		settingsFile = new File(Settings.rootPath, Settings.settingsFile);
+		settingsFile = new File(Settings.settingsFile);
 		
 		if (!settingsFile.exists()) {
 			
@@ -84,33 +141,6 @@ public class Main {
 		
 			// UPDATE
 		
-		try {
-			
-			File tmpSrc = new File (Settings.rootPath, Settings.tmpFile + ".java");
-			File tmpClass = new File (Settings.rootPath, Settings.tmpFile + ".class");
-			File tmpDir = new File (Settings.rootPath, "tmp");
-			
-			if (tmpSrc.exists()) {
-				
-				tmpSrc.delete();
-			}
-			
-			if (tmpClass.exists()) {
-				
-				tmpClass.delete();
-			}
-			
-			if (tmpDir.exists()) {
-				
-				tmpClass.delete();
-			}
-		}
-		
-		catch (Exception e) {
-			
-			log(errorLog, e);
-		}
-		
 		Updater.refresh();
 		if (Updater.check()) gui.dialogUpdate();
 		
@@ -118,7 +148,7 @@ public class Main {
 		
 			// SCHEMA
 
-		schemaFile = new File(Settings.rootPath, Settings.schemaFile);
+		schemaFile = new File(Settings.schemaFile);
 		saved = true;
 		
 		try {

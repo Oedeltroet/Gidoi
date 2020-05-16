@@ -1,9 +1,9 @@
 /.settings
+/bin
 /exported
 /logs
 /screenplays
 /screenplay.xsd
 /settings
+/target
 Thumbs.db
-/bin/
-/target/

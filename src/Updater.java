@@ -72,48 +72,43 @@ public class Updater {
 	public static void update() {
 		
 		try {
-		
-			writeTmpFile();
 			
-			new ProcessBuilder("javac", Settings.tmpFile + ".java").start().waitFor();
-			new ProcessBuilder("java", "tmp").start();
-		
-			System.exit(0);
+			File file;
+			String code;
+			FileOutputStream output;
+			
+			if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+				
+				file = new File(Settings.tmpFile + ".sh");
+				code = "#!/bin/sh\nmv tmp/* tmp/.* .\nrmdir tmp\njava -jar Gidoi.jar";
+				
+				output = new FileOutputStream(file);
+				output.write(code.getBytes());
+				output.close();
+				file.setExecutable(true);
+				
+				new ProcessBuilder(file.toURI().getPath()).start();
+				System.exit(0);
+			}
+			
+			else if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+				
+				file = new File(Settings.tmpFile + ".bat");
+				code = "mv tmp/* tmp/.* . & rmdir tmp & java -jar Gidoi.jar";
+				
+				output = new FileOutputStream(file);
+				output.write(code.getBytes());
+				output.close();
+				file.setExecutable(true);
+				
+				Runtime.getRuntime().exec("cmd /c" + file.getName());
+				System.exit(0);
+			}
 		}
 		
 		catch (Exception e) {
 			
 			Main.log(Main.errorLog, e);
 		}
-	}
-	
-	private static void writeTmpFile() throws Exception {
-			
-		if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
-			
-			new ProcessBuilder("cd", Settings.rootPath).start().waitFor();
-		}
-		
-		File tmp = new File(Settings.tmpFile + ".java");
-		
-		String code =
-				
-		"public class tmp {" +
-				
-			"public static void main(String[] args) {" +
-			
-				"try { " +
-				
-					"Runtime.getRuntime().exec(\"cmd /c start /wait mv -f tmp/* . & rmdir tmp\");" +
-					"Runtime.getRuntime().exec(\"java -jar Gidoi.jar\");" +
-				"}" +
-					
-				"catch (Exception e) {e.printStackTrace();}" +
-			"}" +
-		"}";
-		
-		FileOutputStream output = new FileOutputStream(tmp);
-		output.write(code.getBytes());
-		output.close();
 	}
 }
