@@ -18,12 +18,10 @@ import org.xml.sax.SAXException;
 
 public class Main {
 	
-	// TODO more scene elements: subheader, transition, intercut
-	// TODO edit/rename locations, characters
-	
+	public static Splashscreen splash;
 	public static GUI gui;
-	public static boolean saved;
-	public static File currentFile, schemaFile, errorLog, validationLog;
+	public static boolean saved, startupErrors;
+	public static File currentFile, schemaFile, settingsFile, errorLog, validationLog;
 	public static File[] files;
 	public static SchemaFactory schemaFactory;
 	public static Schema schema;
@@ -36,6 +34,73 @@ public class Main {
 	
 	
 	public static void main(String[] args) {
+		
+		startupErrors = false;
+		
+		
+		
+			// SPLASHSCREEN
+		splash = new Splashscreen();
+		
+		
+			// TMP FILES
+		
+		try {
+			
+			String path = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath()).getAbsolutePath();
+			
+			File tmpFile = 
+					
+				System.getProperty("os.name").toLowerCase().startsWith("windows")
+				
+					? new File(Settings.tmpFile + ".bat")
+					: new File(path, Settings.tmpFile + ".sh");
+			
+			if (tmpFile.exists()) {
+				
+				tmpFile.delete();
+			}
+			
+			
+			
+				// LINUX COMPATIBILITY
+			
+			if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
+				
+				if (!System.getProperty("user.dir").equals(path)) {
+				
+					try {
+						
+						FileOutputStream output = new FileOutputStream(tmpFile);
+						output.write(("#!/bin/sh\ncd " + path + "\njava -jar Gidoi.jar").getBytes());
+						output.close();
+						
+						tmpFile.setExecutable(true);
+
+						new ProcessBuilder(tmpFile.toURI().getPath()).start();
+					}
+					
+					catch (Exception e) {
+						
+						e.printStackTrace();
+					}
+					
+					finally {
+						
+						System.exit(0);
+					}
+				}
+			}
+		}
+		
+		catch (Exception e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		
+			// LOGS
 		
 		try {
 			
@@ -54,49 +119,94 @@ public class Main {
 		
 		
 		
-		if (!new File("settings").exists()) {
-			
-			saveSettings();
-		}
+			// REFRESH
 		
-		loadSettings();
+		Updater.refresh();
 		
-		Settings.localisation = ResourceBundle.getBundle(Settings.baseBundleName);
-		Locale.setDefault(Settings.language);
-
-		schemaFile = new File("screenplay.xsd");
-		saved = true;
 		
-		gui = new GUI();
-		gui.refreshToolbar();
+		
+			// SETTINGS
 		
 		try {
 			
-			builderFactory = DocumentBuilderFactory.newInstance();
-			builder = builderFactory.newDocumentBuilder();
-			gui.status.setText("XML parser successfully initialised.");
-			
-			transformerFactory = TransformerFactory.newInstance();
-			transformer = transformerFactory.newTransformer();
-			gui.status.setText("XML transformer successfully initialised.");
-			
-			createSchemaFile();
-			
-			new File(Settings.pathScreenplays).mkdir();
-			files = getFiles(Settings.pathScreenplays, ".xml");
-			
-			if (files != null) {
+			settingsFile = new File(Settings.settingsFile);
+		
+			if (!settingsFile.exists()) {
 				
-				gui.status.setText(files.length + (files.length == 1 ? " file" : " files") + " found.");
+				saveSettings();
 			}
+			
+			loadSettings();
 		}
 		
 		catch (Exception e) {
 			
 			log(errorLog, e);
+		}
+		
+		
+		
+			// LOCALISATION
+		
+		Settings.localisation = ResourceBundle.getBundle(Settings.baseBundleName);
+		Locale.setDefault(Settings.language);
+		
+		
+		
+			// SCHEMA
+
+		schemaFile = new File(Settings.schemaFile);
+		saved = true;
+		
+		
+		
+		try {
+			
+			// XML parser
+			builderFactory = DocumentBuilderFactory.newInstance();
+			builder = builderFactory.newDocumentBuilder();
+			
+			// XML transformer
+			transformerFactory = TransformerFactory.newInstance();
+			transformer = transformerFactory.newTransformer();
+			
+			// schema file
+			createSchemaFile();
+			
+			new File(Settings.pathScreenplays).mkdir();
+			files = getFiles(Settings.pathScreenplays, ".xml");
+		}
+		
+		catch (Exception e) {
+			
+			log(errorLog, e);
+			startupErrors = true;
+		}
+		
+		
+		
+			// GUI
+		
+		gui = new GUI();
+		gui.refreshToolbar();
+		
+		
+		
+			// ERRORS
+		
+		if (startupErrors) {
+			
 			gui.error(gui.window, "ERR_INIT");
 		}
+
+		
+		
+			// UPDATE
+		
+		if (Updater.check()) gui.dialogUpdate();
 	}
+	
+	
 	
 	public static void clearLogs() throws IOException, SecurityException {
 		
@@ -148,83 +258,73 @@ public class Main {
 		}
 	}
 	
-	public static void loadSettings() {
+	public static void loadSettings() throws Exception {
+		
+		FileInputStream input = new FileInputStream(settingsFile);
+		Properties settings = new Properties();
 		
 		try {
-		
-			FileInputStream input = new FileInputStream("settings");
-			Properties settings = new Properties();
 			
-			try {
-				
-				settings.load(input);
-			}
-			
-			catch (Exception e) {
-				
-				log(errorLog, e);
-				gui.error(gui.window, "ERR_LOAD_SETTINGS");
-			}
-			
-			finally {
-				
-				input.close();
-			}
-			
-			if (settings.containsKey("gl")) {
-				
-				Locale language = new Locale((String) settings.get("gl"));
-				
-				if (Arrays.asList(Settings.languages).contains(language)) {
-					
-					Settings.language = language;
-					Locale.setDefault(Settings.language);
-				}
-			}
+			settings.load(input);
 		}
 		
 		catch (Exception e) {
 			
 			log(errorLog, e);
-			gui.error(gui.window, "ERR_LOAD_SETTINGS");
+			
+			if (gui != null) {
+				
+				gui.error(gui.window, "ERR_LOAD_SETTINGS");
+			}
+		}
+		
+		finally {
+			
+			input.close();
+		}
+		
+		if (settings.containsKey("gl")) {
+			
+			Locale language = new Locale((String) settings.get("gl"));
+			
+			if (Arrays.asList(Settings.languages).contains(language)) {
+				
+				Settings.language = language;
+				Locale.setDefault(Settings.language);
+			}
 		}
 	}
 	
-	public static void saveSettings() {
+	public static void saveSettings() throws Exception {
 		
 		Properties settings = new Properties();
 		
 		settings.setProperty("gl", Settings.language.toLanguageTag());
 		
-		try {
+		FileOutputStream output = new FileOutputStream(settingsFile);
 		
-			FileOutputStream output = new FileOutputStream("settings");
+		try {
 			
-			try {
-				
-				settings.store(output, null);
-			}
-			
-			catch (Exception e) {
-				
-				log(errorLog, e);
-				gui.error(gui.window, "ERR_SAVE_SETTINGS");
-			}
-			
-			finally {
-				
-				output.close();
-			}
+			settings.store(output, null);
 		}
 		
 		catch (Exception e) {
 			
 			log(errorLog, e);
-			gui.error(gui.window, "ERR_SAVE_SETTINGS");
+			
+			if (gui != null) {
+				
+				gui.error(gui.window, "ERR_SAVE_SETTINGS");
+			}
+		}
+		
+		finally {
+			
+			output.close();
 		}
 	}
 	
-	public static void createSchemaFile() {
+	public static void createSchemaFile() throws Exception {
 		
 		Document document = builder.newDocument();
 		
@@ -408,18 +508,13 @@ public class Main {
 			StreamResult result = new StreamResult(schemaFile);
 			transformer.transform(source,  result);
 			
-			gui.status.setText("XML schema file " + schemaFile + " successfully created.");
-			
 			schemaFactory = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
 		    schema = schemaFactory.newSchema(new StreamSource(schemaFile));
-		    
-		    gui.status.setText("XML schema successfully loaded.");
 		}
 		
 		catch (Exception e) {
 			
 			log(errorLog, e);
-			gui.error(gui.window, "ERR_XML_SCHEMA_FILE");
 		}
 	}
 	
@@ -432,8 +527,6 @@ public class Main {
 		try {
 			
 			validator.validate(new DOMSource(document));
-			
-			// TODO code improvement
 			
 			List<Element> scenes = Arrays.asList(getElements(document, "scene", null));
 			List<Element> locations = Arrays.asList(getElements(document, "location", null));
@@ -642,6 +735,7 @@ public class Main {
 			
 			else {
 				
+				gui.status.setText(file + " is invalid.");
 				gui.error(gui.window, "ERR_INVALID_FILE");
 			}
 		}

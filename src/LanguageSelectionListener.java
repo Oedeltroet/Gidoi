@@ -24,7 +24,16 @@ public class LanguageSelectionListener implements ItemListener {
 			Locale.setDefault(Settings.language);
 			JOptionPane.setDefaultLocale(Settings.language);
 			
-			Main.saveSettings();
+			try {
+				
+				Main.saveSettings();
+			}
+			
+			catch (Exception e) {
+				
+				Main.log(Main.errorLog, e);
+				Main.gui.error(Main.gui.dialogSettings, "ERR_SAVE_SETTINGS");
+			}
 			
 			Main.gui.refreshToolbar();
 			Main.gui.status.setText("Language changed to " + Settings.language.getDisplayLanguage());

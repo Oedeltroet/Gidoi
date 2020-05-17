@@ -141,9 +141,6 @@ public class GUI implements ActionListener {
 
 	public GUI() {
 		
-		// TODO more settings
-		// TODO save as
-		
 		x = 50;
 		y = 50;
 		
@@ -208,7 +205,7 @@ public class GUI implements ActionListener {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		status = new JLabel("Status bar");
+		status = new JLabel(Settings.versionStr);
 		status.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		statusbar = new JPanel();
@@ -216,6 +213,8 @@ public class GUI implements ActionListener {
 		statusbar.setBorder(BorderFactory.createBevelBorder(EtchedBorder.LOWERED));
 		statusbar.setLayout(new BoxLayout(statusbar, BoxLayout.X_AXIS));
 		statusbar.add(status);
+		
+		if (Main.splash != null) Main.splash.dispose();
 		
 		window = new JFrame(Settings.versionStr);
 		window.setIconImage(Toolkit.getDefaultToolkit().createImage(Main.class.getResource("/gfx/logo.png")));
@@ -299,6 +298,39 @@ public class GUI implements ActionListener {
 		);
 	}
 	
+	public void dialogUpdate() {
+		
+		switch (JOptionPane.showOptionDialog(
+				
+			window,
+			Settings.localize("UPDATE_AVAILABLE"),
+			Settings.localize("DLG_UPDATE"),
+			JOptionPane.YES_NO_OPTION,
+			JOptionPane.INFORMATION_MESSAGE,
+			null,
+			null,
+			1
+		)) {
+		
+			case 0:
+				
+				try {
+				
+					Updater.update();
+				}
+				
+				catch (Exception e) {
+					
+					Main.log(Main.errorLog, e);
+					error(window, "ERR_UPDATE");
+				}
+				
+			default:
+				
+				break;
+		}
+	}
+	
 	public void dialogNewScreenplay() {
 		
 		dialogNewScreenplayTitle = new JTextField(20);
@@ -371,8 +403,6 @@ public class GUI implements ActionListener {
 			
 			dialogOpenFileConfirm = new JButton(Settings.localize("BTN_OK"));
 			dialogOpenFileConfirm.addActionListener(this);
-			
-			// TODO delete screenplay
 			
 			dialogOpenFileContent = new JPanel();
 			dialogOpenFileContent.add(dialogOpenFileBox);
@@ -959,8 +989,6 @@ public class GUI implements ActionListener {
 	
 	public void refreshPreview() {
 		
-		// TODO don't rebuild the whole string every time, edit document instead
-		
 		String text = "";
 		
 		// title
@@ -1387,7 +1415,7 @@ public class GUI implements ActionListener {
 		// confirm creating a new screenplay
 		if (e.getSource().equals(dialogNewScreenplayConfirm)) {
 			
-			if (dialogNewScreenplayFile.getText().matches(Settings.validFilenamePattern)) {
+			if (dialogNewScreenplayFile.getText().matches(Settings.validFilenamePatternXML)) {
 			
 				if (!Main.checkFilename(dialogNewScreenplayFile.getText(), dialogNewScreenplayTitle.getText(), dialogNewScreenplayAuthor.getText())) {
 					
@@ -1485,7 +1513,6 @@ public class GUI implements ActionListener {
 		// export the screenplay to a pdf file
 		if (e.getSource().equals(export)) {
 			
-			// TODO export dialog
 			Exporter.exportToPDF();
 		}
 		

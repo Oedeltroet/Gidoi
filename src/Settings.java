@@ -45,11 +45,15 @@ public class Settings {
 	
 	
 	// paths, patterns and strings
-	public static String versionStr = "Gidoi 0.1 (Beta)";
+	public static String versionStr = "Gidoi 0.2 (Beta)";
+	public static String settingsFile = "settings";
+	public static String schemaFile = "screenplay.xsd";
+	public static String tmpFile = "tmp";
 	public static String pathScreenplays = "screenplays/";
 	public static String pathExported = "exported/";
 	public static String pathLogfiles = "logs/";
-	public static String validFilenamePattern = "[^./]+\\.xml";
+	public static String validFilenamePatternXML = "[^./]+\\.xml";
+	public static String urlRepository = "https://github.com/Oedeltroet/Gidoi";
 	
 	public static String[] optionsPlace = {"int.", "ext.", "int./ext."};
 	public static String[] optionsTime = {"day", "night"};

@@ -1,8 +1,11 @@
+/.classpath
+/.project
+/.settings
+/bin
 /exported
 /logs
 /screenplays
 /screenplay.xsd
 /settings
-/src/gfx/Thumbs.db
-/bin/
-/target/
+/target
+Thumbs.db
