@@ -31,7 +31,15 @@ public class Updater {
 		// if not...
 		catch (Exception e1) {
 			
-			update();
+			try {
+				
+				update();
+			}
+			
+			catch (Exception e2) {
+				
+				Main.startupErrors = true;
+			}
 		}
 	}
 	
@@ -51,35 +59,24 @@ public class Updater {
 		return false;
 	}
 	
-	public static void update() {
+	public static void update() throws Exception {
+			
+		// make sure there is no tmp folder yet
+		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 		
-		try {
-			
-			// make sure there is no tmp folder yet
-			if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
-			
-				Runtime.getRuntime().exec("cmd /c rmdir /s /q " + Settings.tmpFile).waitFor();
-			}
-			
-			else {
-				
-				new ProcessBuilder("rm", "-rf", Settings.tmpFile).start();
-			}
-			
-			// clone origin into tmp dir
-			Main.gui.status.setText("Cloning...");
-			Git.cloneRepository().setURI(Settings.urlRepository).setDirectory(new File(Settings.tmpFile)).call();
-			
-			// move files and restart
-			Main.gui.status.setText("Updating...");
-			moveFiles();
+			Runtime.getRuntime().exec("cmd /c rmdir /s /q " + Settings.tmpFile).waitFor();
 		}
 		
-		catch (Exception e2) {
+		else {
 			
-			Main.log(Main.errorLog, e2);
-			Main.gui.error(Main.gui.window, "ERR_UPDATE");
+			new ProcessBuilder("rm", "-rf", Settings.tmpFile).start();
 		}
+		
+		// clone origin into tmp dir
+		Git.cloneRepository().setURI(Settings.urlRepository).setDirectory(new File(Settings.tmpFile)).call();
+		
+		// move files and restart
+		moveFiles();
 	}
 	
 	private static void moveFiles() {

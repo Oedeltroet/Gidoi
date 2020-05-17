@@ -205,7 +205,7 @@ public class GUI implements ActionListener {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		status = new JLabel("Status bar");
+		status = new JLabel(Settings.versionStr);
 		status.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		statusbar = new JPanel();
@@ -213,6 +213,8 @@ public class GUI implements ActionListener {
 		statusbar.setBorder(BorderFactory.createBevelBorder(EtchedBorder.LOWERED));
 		statusbar.setLayout(new BoxLayout(statusbar, BoxLayout.X_AXIS));
 		statusbar.add(status);
+		
+		if (Main.splash != null) Main.splash.dispose();
 		
 		window = new JFrame(Settings.versionStr);
 		window.setIconImage(Toolkit.getDefaultToolkit().createImage(Main.class.getResource("/gfx/logo.png")));
@@ -310,8 +312,22 @@ public class GUI implements ActionListener {
 			1
 		)) {
 		
-			case 0:	Updater.update();
-			default: break;
+			case 0:
+				
+				try {
+				
+					Updater.update();
+				}
+				
+				catch (Exception e) {
+					
+					Main.log(Main.errorLog, e);
+					error(window, "ERR_UPDATE");
+				}
+				
+			default:
+				
+				break;
 		}
 	}
 	

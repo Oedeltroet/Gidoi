@@ -48,6 +48,7 @@ public class Localisation extends ListResourceBundle {
 			{"ERR_REMOVE_ELEMENT", "Due to an error, the element could not be removed.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_SAVE_SCREENPLAY", "Due to an error, the screenplay could not be saved.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_SAVE_SETTINGS", "Due to an error, user settings could not be saved.\nMake sure that a file called 'settings' exists in the root directory.\nIf that is the case, please check the error log and contact the developer."},
+			{"ERR_UPDATE", "Due to an error, the update could not be installed.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_VALIDATION_FAILED", "An error occured during validation process.\nPlease check the error log and contact the developer."},
 			{"ERR_XML_SCHEMA_FILE", "Due to an error, the XML schema file could not be loaded.\nThis may cause trouble when trying to load screenplays.\nFor further information, please check the error log and contact the developer."},
 			

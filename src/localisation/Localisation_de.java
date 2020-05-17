@@ -45,6 +45,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"ERR_REMOVE_ELEMENT", "Aufgrund eines Fehlers konnte das Element nicht entfernt werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_SAVE_SCREENPLAY", "Aufgrund eines Fehlers konnte das Drehbuch nicht gespeichert werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_SAVE_SETTINGS", "Aufgrund eines Fehlers konnten die benutzerdefinierten Einstellungen nicht gespeichert werden.\nVergewissern Sie sich, dass eine Datei mit dem Namen 'settings' im Hauptverzeichnis existiert.\nWenn das der Fall ist, konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
+			{"ERR_UPDATE", "Aufgrund eines Fehlers konnte das Update nicht installiert werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_VALIDATION_FAILED", "Bei der Validierung des Drehbuchs ist ein Fehler aufgetreten.\nBitte konsultieren Sie das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_XML_SCHEMA_FILE", "Aufgrund eines Fehlers konnte die XML-Schemadatei nicht geladen werden.\nDies kann beim Laden von Drehbüchern zu unvorhergesehenen Validierungsfehlern führen.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			
