@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileOutputStream;
-import org.eclipse.jgit.api.*;
+import org.eclipse.jgit.api.Git;
+import org.eclipse.jgit.lib.BranchTrackingStatus;
 import org.eclipse.jgit.lib.StoredConfig;
 
 public class Updater {
@@ -30,24 +31,7 @@ public class Updater {
 		// if not...
 		catch (Exception e1) {
 			
-			try {
-				
-				Main.gui.status.setText("Cloning...");
-				
-				// clone origin into tmp dir
-				Git.cloneRepository().setURI(Settings.urlRepository).setDirectory(new File("tmp")).call();
-				
-				Main.gui.status.setText("Updating...");
-				
-				// get current version
-				update();
-			}
-			
-			catch (Exception e2) {
-				
-				Main.log(Main.errorLog, e2);
-				Main.gui.error(Main.gui.window, "ERR_UPDATE");
-			}
+			update();
 		}
 	}
 	
@@ -55,9 +39,7 @@ public class Updater {
 		
 		try {
 			
-			git.fetch().call();
-			
-			return !git.getRepository().resolve("HEAD").equals(git.getRepository().resolve("FETCH_HEAD"));
+			return BranchTrackingStatus.of(git.getRepository(), "master").getBehindCount() > 0;
 		}
 		
 		catch (Exception e) {
@@ -73,28 +55,46 @@ public class Updater {
 		
 		try {
 			
+			// make sure there is no tmp folder yet
+			if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+			
+				Runtime.getRuntime().exec("cmd /c rmdir /s /q " + Settings.tmpFile).waitFor();
+			}
+			
+			else {
+				
+				new ProcessBuilder("rm", "-rf", Settings.tmpFile).start();
+			}
+			
+			// clone origin into tmp dir
+			Main.gui.status.setText("Cloning...");
+			Git.cloneRepository().setURI(Settings.urlRepository).setDirectory(new File(Settings.tmpFile)).call();
+			
+			// move files and restart
+			Main.gui.status.setText("Updating...");
+			moveFiles();
+		}
+		
+		catch (Exception e2) {
+			
+			Main.log(Main.errorLog, e2);
+			Main.gui.error(Main.gui.window, "ERR_UPDATE");
+		}
+	}
+	
+	private static void moveFiles() {
+		
+		try {
+			
 			File file;
 			String code;
 			FileOutputStream output;
 			
-			if (System.getProperty("os.name").toLowerCase().startsWith("linux")) {
-				
-				file = new File(Settings.tmpFile + ".sh");
-				code = "#!/bin/sh\nmv tmp/* tmp/.* .\nrmdir tmp\njava -jar Gidoi.jar";
-				
-				output = new FileOutputStream(file);
-				output.write(code.getBytes());
-				output.close();
-				file.setExecutable(true);
-				
-				new ProcessBuilder(file.toURI().getPath()).start();
-				System.exit(0);
-			}
-			
-			else if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
+			// windows
+			if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 				
 				file = new File(Settings.tmpFile + ".bat");
-				code = "mv tmp/* tmp/.* . & rmdir tmp & java -jar Gidoi.jar";
+				code = "cp -rf tmp/* tmp/.* . & rmdir /s /q tmp & java -jar Gidoi.jar";
 				
 				output = new FileOutputStream(file);
 				output.write(code.getBytes());
@@ -102,6 +102,21 @@ public class Updater {
 				file.setExecutable(true);
 				
 				Runtime.getRuntime().exec("cmd /c" + file.getName());
+				System.exit(0);
+			}
+			
+			// linux or mac
+			else {
+				
+				file = new File(Settings.tmpFile + ".sh");
+				code = "#!/bin/sh\ncp -rf tmp/* tmp/.* .\nrm -rf tmp\njava -jar Gidoi.jar";
+				
+				output = new FileOutputStream(file);
+				output.write(code.getBytes());
+				output.close();
+				file.setExecutable(true);
+				
+				new ProcessBuilder(file.toURI().getPath()).start();
 				System.exit(0);
 			}
 		}

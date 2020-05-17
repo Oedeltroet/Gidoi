@@ -44,10 +44,10 @@ public class Main {
 			
 			File tmpFile = 
 					
-				System.getProperty("os.name").toLowerCase().startsWith("linux")
+				System.getProperty("os.name").toLowerCase().startsWith("windows")
 				
-					? new File(path, Settings.tmpFile + ".sh")
-					: new File(Settings.tmpFile + ".bat");
+					? new File(Settings.tmpFile + ".bat")
+					: new File(path, Settings.tmpFile + ".sh");
 			
 			if (tmpFile.exists()) {
 				
