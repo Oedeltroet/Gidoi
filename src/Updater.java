@@ -47,6 +47,7 @@ public class Updater {
 		
 		try {
 			
+			git.fetch().setDryRun(true).call();
 			return BranchTrackingStatus.of(git.getRepository(), "master").getBehindCount() > 0;
 		}
 		
