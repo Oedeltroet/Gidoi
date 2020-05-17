@@ -6,13 +6,13 @@ What you need to get before using the program.
 * [Java](https://www.java.com/download/)
 
 ## Installation
-Just click on _Gidoi.exe_ (Windows) or _Gidoi.jar_ and the application should initialize itself. This may take a few moments.
+Just click on _Gidoi.jar_ and the application should initialize itself. This may take a few moments.
 
 ## Getting started
-* After the first startup, you should see the main window containing a blank preview at the center as well as a toolbar at the top and a status bar at the bottom. The root directory should contain the following:
-  * _logs_ - a directory which contains the logfiles _error.txt_ and _validation.txt_
+* After the first startup, you should see the main window containing a blank preview area at the center as well as a toolbar at the top and a status bar at the bottom. The root directory should contain the following:
+  * _logs_ - a directory containing the logfiles _error.txt_ and _validation.txt_
   * _screenplays_ - the directory in which your screenplays will be stored as _.xml_ files
-  * _screenplay.xsd_ - a file which contains the xml schema for your screenplays
+  * _screenplay.xsd_ - the xml schema for your screenplays
   * _settings_ - the file in which the user settings are stored
 
 * To create a new screenplay, click on the _New_ button in the top left corner. This will open a dialog with three text fields, which allow you to choose a title, set the author's name and the name of the file. The latter is automatically adapted to the title, so unless you want to, you don't have to change it manually. However, if you do so, mind the restrictions given by the tooltip. Finally you can create your new screenplay by clicking on the _OK_ button.
@@ -28,7 +28,6 @@ Just click on _Gidoi.exe_ (Windows) or _Gidoi.jar_ and the application should in
 * Git tool: [JGit](https://www.eclipse.org/jgit/)
 * Build tool: [Maven](https://maven.apache.org/)
 * PDF tool: [PDFBox](https://pdfbox.apache.org/)
-* EXE wrapper: [JSmooth](http://jsmooth.sourceforge.net/)
 
 ## License
 This project is licensed under the [MIT license](https://choosealicense.com/licenses/mit/). For further information check the [LICENSE.md](LICENSE.md) file.
@@ -38,9 +37,9 @@ The main purpose of this project is to create a software that supports screenwri
  
 ## Goals
 The following goals represent the desired characteristics of the program.
-* __Complexity__ - More than a simple editor.
-* __Universality__ - Useful for any kind of screenplay.
-* __Intuitivity__ - Easy to use for everyone.
+* __Complexity__ - Being more than a simple editor.
+* __Universality__ - Being useful for any kind of screenplay.
+* __Intuitivity__ - Being easy to use for everyone.
 
 ## Authors
 * Teo Förste
