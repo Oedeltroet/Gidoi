@@ -45,7 +45,7 @@ public class Settings {
 	
 	
 	// paths, patterns and strings
-	public static String versionStr = "Gidoi 0.1 (Beta)";
+	public static String versionStr = "Gidoi 0.2 (Beta)";
 	public static String settingsFile = "settings";
 	public static String schemaFile = "screenplay.xsd";
 	public static String tmpFile = "tmp";
