@@ -720,6 +720,7 @@ public class GUI implements ActionListener {
 		if (type.equals("dialogue")) {
 			
 			dialogueCharacter = new JComboBox<Element>(Main.getElements(Main.currentDocument, "character", null));
+			dialogueCharacter.setToolTipText(Settings.localize("TT_DIALOGUE_CHARACTER"));
 			dialogueCharacter.setRenderer(new NodeCellRenderer());
 			
 			if (!add && element.hasAttribute("character")) {
@@ -735,6 +736,7 @@ public class GUI implements ActionListener {
 			
 			dialogueWrylies = new JTextField(20);
 			dialogueWrylies.setEditable(true);
+			dialogueWrylies.setToolTipText(Settings.localize("TT_DIALOGUE_WRYLIES"));
 			
 			if (!add && element.hasAttribute("wrylies")) {
 				

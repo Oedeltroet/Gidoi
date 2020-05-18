@@ -122,8 +122,10 @@ public class Localisation extends ListResourceBundle {
 			{"TT_MOVE_SCENE_ELEMENT_NOTHING_SELECTED", "No scene element selected."},
 			{"TT_REMOVE_SCENE_ELEMENT", "Remove the selected element from the scenen."},
 			{"TT_REMOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Select the scene element you want to remove."},
+			{"TT_DIALOGUE_CHARACTER", "Choose a character for the dialogue."},
+			{"TT_DIALOGUE_WRYLIES", "If required, you can add personal direction (\"wrylies\") here."},
 			
-			{"UPDATE_AVAILABLE", "A new update is available. Would you like it to be installed?"}
+			{"UPDATE_AVAILABLE", "A new update is available. Would you like to install it now?"}
 		};
 	}
 }

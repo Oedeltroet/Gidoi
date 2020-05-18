@@ -20,7 +20,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"DLG_OPEN_FILE", "Datei öffnen"},
 			{"DLG_NEW_ACTION", "Handlung erstellen"},
 			{"DLG_EDIT_ACTION", "Handlung bearbeiten"},
-			{"DLG_NEW_CHARACTER", "Charakter erstellen"},
+			{"DLG_NEW_CHARACTER", "Figur erstellen"},
 			{"DLG_NEW_DIALOGUE", "Dialog erstellen"},
 			{"DLG_EDIT_DIALOGUE", "Dialog bearbeiten"},
 			{"DLG_NEW_LOCATION", "Schauplatz erstellen"},
@@ -53,7 +53,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"WRN_UNSAVED_CHANGES", "Nicht gespeicherte Änderungen gehen verloren.\nSpeichern?"},
 			{"WRN_ARE_YOU_SURE", "Sind Sie sicher?"},
 			{"WRN_LOCATION_EXISTS", "Ein Schauplatz mit diesem Namen existiert bereits."},
-			{"WRN_CHARACTER_EXISTS", "Ein Charakter mit diesem Namen existiert bereits."},
+			{"WRN_CHARACTER_EXISTS", "Eine Figur mit diesem Namen existiert bereits."},
 			
 			{"BTN_ADD", "Hinzufügen"},
 			{"BTN_ADD_ACTION", "Handlung"},
@@ -71,9 +71,9 @@ public class Localisation_de extends ListResourceBundle {
 			{"TAB_GENERAL", "Allgemein"},
 			{"TAB_SCENES", "Szenen"},
 			{"TAB_LOCATIONS", "Schauplätze"},
-			{"TAB_CHARACTERS", "Charaktere"},
+			{"TAB_CHARACTERS", "Figuren"},
 			
-			{"DFT_CHARACTER", "Neuer Charakter"},
+			{"DFT_CHARACTER", "Neue Figur"},
 			{"DFT_LOCATION", "Neuer Schauplatz"},
 			{"DFT_TITLE", "Neues Drehbuch"},
 			
@@ -100,15 +100,15 @@ public class Localisation_de extends ListResourceBundle {
 			{"TT_REMOVE_LOCATION", "Entfernen Sie den ausgewählten Schauplatz."},
 			{"TT_REMOVE_LOCATION_USED_FOR_SCENE", "Der ausgewählte Schauplatz kann nicht entfernt werden, da er in einer Szene verwendet wird."},
 			{"TT_REMOVE_LOCATION_NOTHING_SELECTED", "Wählen Sie einen Schauplatz aus, den Sie entfernen möchten."},
-			{"TT_ADD_CHARACTER", "Erstellen Sie einen neuen Charakter."},
-			{"TT_REMOVE_CHARACTER", "Entfernen Sie den ausgewählten Charakter."},
-			{"TT_REMOVE_CHARACTER_USED_FOR_DIALOGUE", "Der ausgewählte Charakter kann nicht entfernt werden - er spricht einen Dialog in Szene "},
-			{"TT_REMOVE_CHARACTER_NOTHING_SELECTED", "Wählen Sie einen Charakter aus, den Sie entfernen möchten."},
+			{"TT_ADD_CHARACTER", "Erstellen Sie eine neue Figur."},
+			{"TT_REMOVE_CHARACTER", "Entfernen Sie die ausgewählte Figur."},
+			{"TT_REMOVE_CHARACTER_USED_FOR_DIALOGUE", "Die ausgewählte Figur kann nicht entfernt werden - sie spricht einen Dialog in Szene "},
+			{"TT_REMOVE_CHARACTER_NOTHING_SELECTED", "Wählen Sie eine Figur aus, die Sie entfernen möchten."},
 			{"TT_CREATE_ACTION_APPEND", "Erstellen Sie eine neue Handlung und fügen Sie sie der Szene hinzu."},
 			{"TT_CREATE_ACTION_INSERT", "Erstellen Sie eine neue Handlung und fügen Sie sie vor dem ausgewählten Element ein."},
 			{"TT_CREATE_DIALOGUE_APPEND", "Erstellen Sie einen neuen Dialog und fügen Sie ihn der Szene hinzu."},
 			{"TT_CREATE_DIALOGUE_INSERT", "Erstellen Sie einen neuen Dialog und fügen Sie ihn vor dem ausgewählten Element ein."},
-			{"TT_CREATE_DIALOGUE_NO_CHARACTER", "Erstellen Sie zunächst einen Charakter."},
+			{"TT_CREATE_DIALOGUE_NO_CHARACTER", "Erstellen Sie zunächst eine Figur."},
 			{"TT_EDIT_ACTION", "Bearbeiten Sie die ausgewählte Handlung."},
 			{"TT_EDIT_DIALOGUE", "Bearbeiten Sie den ausgewählten Dialog."},
 			{"TT_EDIT_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie bearbeiten möchten."},
@@ -119,8 +119,10 @@ public class Localisation_de extends ListResourceBundle {
 			{"TT_MOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie verschieben möchten."},
 			{"TT_REMOVE_SCENE_ELEMENT", "Entfernen Sie das ausgewählte Element aus der Szene."},
 			{"TT_REMOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie entfernen möchten."},
-		
-			{"UPDATE_AVAILABLE", "Ein neues Update ist verfügbar. Soll es installiert werden?"}
+			{"TT_DIALOGUE_CHARACTER", "Wählen Sie eine Figur aus, die diesen Dialog sprechen soll."},
+			{"TT_DIALOGUE_WRYLIES", "Hier können Sie bei Bedarf Anweisungen zur Sprechsweise geben."},
+			
+			{"UPDATE_AVAILABLE", "Ein neues Update ist verfügbar. Soll es jetzt installiert werden?"}
 		};
 	}
 }
