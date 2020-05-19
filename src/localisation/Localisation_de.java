@@ -16,6 +16,9 @@ public class Localisation_de extends ListResourceBundle {
 			{"SETTINGS", "Einstellungen"},
 			{"SCREENPLAY_EDITOR", "Drehbucheditor"},
 			
+			{"PDF_FILES", "PDF Dateien"},
+			{"XML_FILES", "XML Dateien"},
+			
 			{"DLG_ERROR", "Fehler"},
 			{"DLG_OPEN_FILE", "Datei öffnen"},
 			{"DLG_NEW_ACTION", "Handlung erstellen"},
@@ -37,7 +40,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"ERR_EXPORT", "Beim Exportvorgang ist ein Fehler aufgetreten.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_INIT", "Bei der Initialisierung der Anwendung ist ein Fehler aufgetreten.\nBitte konsultieren Sie das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_INSERT_SCENE", "Aufgrund eines Fehlers konnte die erstellte Szene nicht richtig eingefügt werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
-			{"ERR_INVALID_FILE", "Diese Datei ist fehlerhaft.\nFür weitere Informationen konsultieren Sie bitte das Validierungsprotokoll."},
+			{"ERR_INVALID_FILE", "Diese Datei hat kein gültiges Format.\nFür weitere Informationen konsultieren Sie bitte das Validierungsprotokoll."},
 			{"ERR_INVALID_FILENAME", "Bitte geben Sie einen gültigen Dateinamen an."},
 			{"ERR_LOAD_SCREENPLAY", "Aufgrund eines Fehlers konnte das Drehbuch nicht geladen werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_LOAD_SETTINGS", "Aufgrund eines Fehlers konnten keine benutzerdefinierten Einstellungen geladen werden.\nVergewissern Sie sich, dass eine Datei mit dem Namen 'settings' im Hauptverzeichnis existiert.\nWenn das der Fall ist, konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},

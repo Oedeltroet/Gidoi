@@ -19,6 +19,9 @@ public class Localisation extends ListResourceBundle {
 			{"SCREENPLAY", "Screenplay"},
 			{"SCREENPLAY_EDITOR", "Screenplay Editor"},
 			
+			{"PDF_FILES", "PDF files"},
+			{"XML_FILES", "XML files"},
+			
 			{"DLG_ERROR", "Error"},
 			{"DLG_OPEN_FILE", "Open File"},
 			{"DLG_NEW_ACTION", "New Action"},
@@ -40,7 +43,7 @@ public class Localisation extends ListResourceBundle {
 			{"ERR_EXPORT", "An error occurred during export.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_INIT", "An error occured during intialisation.\nPlease check the error log and contact the developer."},
 			{"ERR_INSERT_SCENE", "Due to an error, the created scene could not be inserted correctly.\nFor further information, please check the error log and contact the developer."},
-			{"ERR_INVALID_FILE", "This file is invalid.\nFor further information, please check the validation log."},
+			{"ERR_INVALID_FILE", "The format of this file is invalid.\nFor further information, please check the validation log."},
 			{"ERR_INVALID_FILENAME", "Please enter a valid filename."},
 			{"ERR_LOAD_SCREENPLAY", "Due to an error, the screenplay could not be loaded.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_LOAD_SETTINGS", "Due to an error, user settings could not be loaded.\nMake sure that a file called 'settings' exists in the root directory.\nIf that is the case, please check the error log and contact the developer."},

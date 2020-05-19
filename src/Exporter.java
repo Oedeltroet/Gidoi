@@ -257,7 +257,6 @@ public class Exporter {
 		
 		if (Main.currentDocument != null) {
 			
-			Main.save();
 			Main.gui.status.setText("Exporting...");
 			 
 			try {
@@ -276,7 +275,7 @@ public class Exporter {
 				properties = new PDDocumentInformation();
 				properties.setTitle(Main.getAttr("title"));
 				properties.setAuthor(Main.getAttr("author"));
-				properties.setCreator(Settings.versionStr);
+				properties.setCreator(Settings.VERSION);
 				
 				today = Calendar.getInstance();
 				

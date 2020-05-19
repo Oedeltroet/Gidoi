@@ -21,7 +21,7 @@ public class Updater {
 			
 			if (
 				config.getString("remote", "origin", "url") == null ||
-				!config.getString("remote", "origin", "url").equals(Settings.urlRepository)
+				!config.getString("remote", "origin", "url").equals(Settings.URL_REMOTE)
 			) {
 				
 				throw new Exception();
@@ -65,16 +65,16 @@ public class Updater {
 		// make sure there is no tmp folder yet
 		if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 		
-			Runtime.getRuntime().exec("cmd /c rmdir /s /q " + Settings.tmpFile).waitFor();
+			Runtime.getRuntime().exec("cmd /c rmdir /s /q " + Settings.FILE_TMP).waitFor();
 		}
 		
 		else {
 			
-			new ProcessBuilder("rm", "-rf", Settings.tmpFile).start();
+			new ProcessBuilder("rm", "-rf", Settings.FILE_TMP).start();
 		}
 		
 		// clone origin into tmp dir
-		Git.cloneRepository().setURI(Settings.urlRepository).setDirectory(new File(Settings.tmpFile)).call();
+		Git.cloneRepository().setURI(Settings.URL_REMOTE).setDirectory(new File(Settings.FILE_TMP)).call();
 		
 		// move files and restart
 		moveFiles();
@@ -91,7 +91,7 @@ public class Updater {
 			// windows
 			if (System.getProperty("os.name").toLowerCase().startsWith("windows")) {
 				
-				file = new File(Settings.tmpFile + ".bat");
+				file = new File(Settings.FILE_TMP + ".bat");
 				code = "cp -rf tmp/* tmp/.* . & rmdir /s /q tmp & java -jar Gidoi.jar";
 				
 				output = new FileOutputStream(file);
@@ -106,7 +106,7 @@ public class Updater {
 			// linux or mac
 			else {
 				
-				file = new File(Settings.tmpFile + ".sh");
+				file = new File(Settings.FILE_TMP + ".sh");
 				code = "#!/bin/sh\ncp -rf tmp/* tmp/.* .\nrm -rf tmp\njava -jar Gidoi.jar";
 				
 				output = new FileOutputStream(file);

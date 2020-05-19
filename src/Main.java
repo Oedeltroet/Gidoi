@@ -53,8 +53,8 @@ public class Main {
 					
 				System.getProperty("os.name").toLowerCase().startsWith("windows")
 				
-					? new File(Settings.tmpFile + ".bat")
-					: new File(path, Settings.tmpFile + ".sh");
+					? new File(Settings.FILE_TMP + ".bat")
+					: new File(path, Settings.FILE_TMP + ".sh");
 			
 			if (tmpFile.exists()) {
 				
@@ -129,7 +129,7 @@ public class Main {
 		
 		try {
 			
-			settingsFile = new File(Settings.settingsFile);
+			settingsFile = new File(Settings.FILE_SETTINGS);
 		
 			if (!settingsFile.exists()) {
 				
@@ -155,7 +155,7 @@ public class Main {
 		
 			// SCHEMA
 
-		schemaFile = new File(Settings.schemaFile);
+		schemaFile = new File(Settings.FILE_SCHEMA);
 		saved = true;
 		
 		
@@ -172,9 +172,6 @@ public class Main {
 			
 			// schema file
 			createSchemaFile();
-			
-			new File(Settings.pathScreenplays).mkdir();
-			files = getFiles(Settings.pathScreenplays, ".xml");
 		}
 		
 		catch (Exception e) {
@@ -210,11 +207,11 @@ public class Main {
 	
 	public static void clearLogs() throws IOException, SecurityException {
 		
-		new File(Settings.pathLogfiles).mkdir();
+		new File(Settings.PATH_LOGFILES).mkdir();
 		
 		
 		
-		errorLog = new File (Settings.pathLogfiles + "error.txt");
+		errorLog = new File (Settings.PATH_LOGFILES + "error.txt");
 		
 		if (errorLog.exists()) {
 			
@@ -225,7 +222,7 @@ public class Main {
 		
 		
 		
-		validationLog = new File (Settings.pathLogfiles + "validation.txt");
+		validationLog = new File (Settings.PATH_LOGFILES + "validation.txt");
 		
 		if (validationLog.exists()) {
 			
@@ -518,6 +515,23 @@ public class Main {
 		}
 	}
 	
+	public static boolean validate(File file) {
+		
+		try {
+			
+			Document document = builder.parse(file);
+			return validate(document);
+		}
+		
+		catch (Exception e) {
+			
+			log(errorLog, e);
+			gui.error(gui.window, "ERR_VALIDATION_FAILED");
+		}
+		
+		return false;
+	}
+	
 	public static boolean validate(Document document) {
 		
 		boolean valid = true;
@@ -619,52 +633,30 @@ public class Main {
 		return valid;
 	}
 	
-	public static boolean checkFilename(String filename, String title, String author) {
-		
-		File file = new File(Settings.pathScreenplays + filename);
-		
-		if (file.exists()) {
-			
-			return false;
-		}
-		
-		create(file);
-		setAttr("title", title);
-		setAttr("author", author);
-		save();
-		
-		return true;
-	}
-	
-	public static void create(File file) {
+	public static void create(String title, String author) {
 		
 		try {
 				
-			file.createNewFile();
-			gui.status.setText(file.getName() + " successfully created.");
-			
-			currentFile = file;
-			gui.status.setText("current file is " + file.getName());
-			
 			currentDocument = builder.newDocument();
 			Element screenplay = currentDocument.createElement("screenplay");
 			currentDocument.appendChild(screenplay);
 			
-			gui.save.setEnabled(true);
+			setAttr("title", title);
+			setAttr("author", author);
+			
+			unsave();
 			gui.refreshToolbar();
 			gui.refreshPreview();
 		}
 		
-		catch(IOException e) {
+		catch(Exception e) {
 			
 			log(errorLog, e);
 			gui.error(gui.window, "ERR_CREATE_SCREENPLAY");
 		}
 	}
 	
-	public static void delete(String title) {
-		
-		File file = new File(Settings.pathScreenplays + title + ".xml");
+	public static void delete(File file) {
 		
 		if (file.exists()) {
 			
@@ -673,33 +665,53 @@ public class Main {
 		}
 	}
 	
+	public static void saveAs(File file) {
+		
+		if (validate(currentDocument)) {
+		
+			try {
+				
+				if (!file.exists()) {
+					
+					file.createNewFile();
+				}
+				
+				DOMSource source = new DOMSource(currentDocument);
+				StreamResult result = new StreamResult(file);
+				transformer.transform(source,  result);
+				
+				currentFile = file;
+				
+				saved = true;
+				gui.save.setEnabled(false);
+				gui.refreshWindowTitle();
+				
+				gui.status.setText(currentFile + " successfully saved.");
+			}
+			
+			catch(Exception e) {
+				
+				log(errorLog, e);
+				gui.error(gui.window, "ERR_SAVE_SCREENPLAY");
+			}
+		}
+		
+		else {
+			
+			gui.error(gui.window, "ERR_INVALID_FILE");
+		}
+	}
+	
 	public static void save() {
 		
 		if (!saved) {
 			
-			if (validate(currentDocument)) {
+			if (currentFile == null) {
 				
-				gui.status.setText("current document is valid.");
-			
-				try {
-					
-					DOMSource source = new DOMSource(currentDocument);
-					StreamResult result = new StreamResult(currentFile);
-					transformer.transform(source,  result);
-					
-					saved = true;
-					gui.save.setEnabled(false);
-					gui.refreshWindowTitle();
-					
-					gui.status.setText(currentFile + " successfully saved.");
-				}
-				
-				catch(Exception e) {
-					
-					log(errorLog, e);
-					gui.error(gui.window, "ERR_SAVE_SCREENPLAY");
-				}
+				//...
 			}
+			
+			saveAs(currentFile);
 		}
 	}
 	
@@ -715,8 +727,6 @@ public class Main {
 		try {
 			
 			Document document = builder.parse(file);
-			
-			gui.status.setText(file + " successfully parsed.");
 			
 			if (validate(document)) {
 				
@@ -745,19 +755,6 @@ public class Main {
 			log(errorLog, e);
 			gui.error(gui.window, "ERR_LOAD_SCREENPLAY");
 		}
-	}
-	
-	public static File[] getFiles(String path, String suffix) {
-		
-		FileFilter filter = new FileFilter() {
-			
-			public boolean accept(File file) {
-	
-				return (file.getName().endsWith(suffix));
-			}
-		};
-		
-		return new File(path).listFiles(filter);
 	}
 	
 	

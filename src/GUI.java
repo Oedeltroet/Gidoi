@@ -7,8 +7,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.*;
 import javax.swing.border.*;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.html.*;
 import org.w3c.dom.*;
 
@@ -95,11 +94,8 @@ public class GUI implements ActionListener {
 						dialogEditAction,
 						dialogEditDialogue;
 	
-	public JTextField	screenplayEditorTitle,
-						screenplayEditorAuthor,
-						dialogNewScreenplayTitle,
-						dialogNewScreenplayAuthor,
-						dialogNewScreenplayFile,
+	public JTextField	screenplayPropertiesTitle,
+						screenplayPropertiesAuthor,
 						scenePropertiesModLocation,
 						dialogAddSceneModTime,
 						dialogAddLocationOrCharacterText,
@@ -114,7 +110,7 @@ public class GUI implements ActionListener {
 							characterList,
 							sceneElementList;
 	
-	public JComboBox<File>	dialogOpenFileBox;
+	public JFileChooser		fileChooser;
 	
 	public JComboBox<Element>	scenePropertiesLocation,
 								dialogueCharacter;
@@ -156,10 +152,163 @@ public class GUI implements ActionListener {
 		create.addActionListener(this);
 		
 		save = new JButton(new ImageIcon(Main.class.getResource("/gfx/save.png")));
-		save.addActionListener(this);
+		save.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (Main.currentFile != null) {
+					
+					Main.save();
+				}
+				
+				else {
+					
+					fileChooser = new JFileChooser(Settings.pathScreenplays) {
+						
+						@Override
+						public void approveSelection() {
+							
+							File file = getSelectedFile();
+							
+							if (!getFileFilter().accept(file)) {
+								
+								error(window, "ERR_INVALID_FILENAME");
+								return;
+							}
+							
+							if (getSelectedFile().exists()) {
+								
+								if (!Main.validate(file)) {
+									
+									error(window, "ERR_INVALID_FILE");
+									return;
+								}
+								
+								// screenplay exists. overwrite?
+								switch (JOptionPane.showOptionDialog(
+										
+									new JDialog(window),
+									Settings.localize("WRN_OVERWRITE"),
+									Settings.localize("DLG_WARNING"),
+									JOptionPane.YES_NO_OPTION,
+									JOptionPane.WARNING_MESSAGE,
+									null,
+									null,
+									2))
+								{
+								
+									case 0:
+										
+										Main.delete(file);
+										break;
+										
+									case 1: return;
+										
+									default: break;
+								}
+						    }
+							
+							super.approveSelection();
+						}
+					};
+
+					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(Settings.localize("XML_FILES"), "xml"));
+					fileChooser.setAcceptAllFileFilterUsed(false);
+					fileChooser.setMultiSelectionEnabled(false);
+					fileChooser.setSelectedFile(new File(Main.getAttr("title") + ".xml"));
+					
+					switch (fileChooser.showSaveDialog(window)) {
+					
+						case JFileChooser.APPROVE_OPTION:
+							
+							Main.saveAs(fileChooser.getSelectedFile());
+							
+						default: break;
+					}
+				}
+			}
+		});
 		
 		open = new JButton(new ImageIcon(Main.class.getResource("/gfx/open.png")));
-		open.addActionListener(this);
+		open.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (!Main.saved) {
+					
+					switch (JOptionPane.showOptionDialog(
+							
+						new JDialog(dialogOpenFile),
+						Settings.localize("WRN_UNSAVED_CHANGES"),
+						Settings.localize("DLG_WARNING"),
+						JOptionPane.YES_NO_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE,
+						null,
+						null,
+						2))
+					{
+					
+						case 0:
+							
+							Main.save();
+							break;
+							
+						case 2:
+							
+							return;
+							
+						default:
+							
+							break;
+					}
+				}
+				
+				fileChooser = new JFileChooser(Settings.pathScreenplays) {
+					
+					@Override
+					public void approveSelection() {
+						
+						File file = getSelectedFile();
+						
+						if (file.exists()) {
+							
+							if (getFileFilter().accept(file)) {
+							
+								if (Main.validate(file)) {
+									
+									super.approveSelection();
+								}
+								
+								else {
+									
+									error(window, "ERR_INVALID_FILE");
+								}
+							}
+							
+							else {
+								
+								error(window, "ERR_INVALID_FILENAME");
+							}
+						}
+					}
+				};
+				
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(Settings.localize("XML_FILES"), "xml"));
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.setMultiSelectionEnabled(false);
+				
+				switch (fileChooser.showOpenDialog(window)) {
+				
+					case JFileChooser.APPROVE_OPTION:
+						
+						Main.load(fileChooser.getSelectedFile());
+						
+					default: break;
+				}
+			}
+		});
 		
 		export = new JButton(new ImageIcon(Main.class.getResource("/gfx/export.png")));
 		export.addActionListener(this);
@@ -205,7 +354,7 @@ public class GUI implements ActionListener {
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		
-		status = new JLabel(Settings.versionStr);
+		status = new JLabel(Settings.VERSION);
 		status.setHorizontalAlignment(SwingConstants.LEFT);
 		
 		statusbar = new JPanel();
@@ -216,7 +365,7 @@ public class GUI implements ActionListener {
 		
 		if (Main.splash != null) Main.splash.dispose();
 		
-		window = new JFrame(Settings.versionStr);
+		window = new JFrame(Settings.VERSION);
 		window.setIconImage(Toolkit.getDefaultToolkit().createImage(Main.class.getResource("/gfx/logo.png")));
 		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		window.setBounds(x, y, preview.getSize().width, height);
@@ -272,6 +421,23 @@ public class GUI implements ActionListener {
 	private Point center(int width, int height, int dialogueWidth, int dialogueHeight) {
 		
 		return new Point(x + width/2 - dialogueWidth/2, y + height/2 - dialogueHeight/2);
+	}
+	
+	private JPanel screenplayProperties(boolean create) {
+		
+		screenplayPropertiesTitle = new JTextField(25);
+		screenplayPropertiesTitle.setText(create ? Settings.localize("DFT_TITLE") : Main.getAttr("title"));
+		
+		screenplayPropertiesAuthor = new JTextField(25);
+		screenplayPropertiesAuthor.setText(create ? System.getProperty("user.name") : Main.getAttr("author"));
+		
+		JPanel screenplayPropertiesPanel = new JPanel();
+		screenplayPropertiesPanel.setLayout(new BoxLayout(screenplayPropertiesPanel, BoxLayout.Y_AXIS));
+		screenplayPropertiesPanel.add(screenplayPropertiesTitle);
+		screenplayPropertiesPanel.add(Box.createRigidArea(new Dimension(0, 5)));
+		screenplayPropertiesPanel.add(screenplayPropertiesAuthor);
+		
+		return screenplayPropertiesPanel;
 	}
 	
 	
@@ -333,53 +499,13 @@ public class GUI implements ActionListener {
 	
 	public void dialogNewScreenplay() {
 		
-		dialogNewScreenplayTitle = new JTextField(20);
-		dialogNewScreenplayTitle.setEditable(true);
-		dialogNewScreenplayTitle.setToolTipText(Settings.localize("TT_PROPERTIES_TITLE"));
-		dialogNewScreenplayTitle.setText(Settings.localize("DFT_TITLE"));
-		
-		dialogNewScreenplayTitle.getDocument().addDocumentListener(new DocumentListener() {
-
-			@Override
-			public void changedUpdate(DocumentEvent arg0) {
-			
-				dialogNewScreenplayFile.setText(dialogNewScreenplayTitle.getText() + ".xml");
-			}
-
-			@Override
-			public void insertUpdate(DocumentEvent arg0) {
-			
-				dialogNewScreenplayFile.setText(dialogNewScreenplayTitle.getText() + ".xml");
-			}
-
-			@Override
-			public void removeUpdate(DocumentEvent arg0) {
-			
-				dialogNewScreenplayFile.setText(dialogNewScreenplayTitle.getText() + ".xml");
-			}
-		});
-		
-		dialogNewScreenplayAuthor = new JTextField(20);
-		dialogNewScreenplayAuthor.setEditable(true);
-		dialogNewScreenplayAuthor.setToolTipText(Settings.localize("TT_PROPERTIES_AUTHOR"));
-		dialogNewScreenplayAuthor.setText(System.getProperty("user.name"));
-		
-		dialogNewScreenplayFile = new JTextField(20);
-		dialogNewScreenplayFile.setEditable(true);
-		dialogNewScreenplayFile.setToolTipText(Settings.localize("TT_PROPERTIES_FILENAME"));
-		dialogNewScreenplayFile.setText(dialogNewScreenplayTitle.getText() + ".xml");
-		
 		dialogNewScreenplayConfirm = new JButton(Settings.localize("BTN_OK"));
 		dialogNewScreenplayConfirm.addActionListener(this);
 		dialogNewScreenplayConfirm.setAlignmentX(JButton.CENTER_ALIGNMENT);
 		
 		dialogNewScreenplayContent = new JPanel();
 		dialogNewScreenplayContent.setLayout(new BoxLayout(dialogNewScreenplayContent, BoxLayout.Y_AXIS));
-		dialogNewScreenplayContent.add(dialogNewScreenplayTitle);
-		dialogNewScreenplayContent.add(Box.createRigidArea(new Dimension(0, 5)));
-		dialogNewScreenplayContent.add(dialogNewScreenplayAuthor);
-		dialogNewScreenplayContent.add(Box.createRigidArea(new Dimension(0, 5)));
-		dialogNewScreenplayContent.add(dialogNewScreenplayFile);
+		dialogNewScreenplayContent.add(screenplayProperties(true));
 		dialogNewScreenplayContent.add(Box.createRigidArea(new Dimension(0, 5)));
 		dialogNewScreenplayContent.add(dialogNewScreenplayConfirm);
 		dialogNewScreenplayContent.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -391,31 +517,6 @@ public class GUI implements ActionListener {
 		dialogNewScreenplay.setLocation(center(window.getWidth(), window.getHeight(), dialogNewScreenplay.getWidth(), dialogNewScreenplay.getHeight()));
 		dialogNewScreenplay.setResizable(false);
 		dialogNewScreenplay.setVisible(true);
-	}
-	
-	public void dialogOpenFile() {
-		
-		Main.files = Main.getFiles(Settings.pathScreenplays, ".xml");
-		
-		if (Main.files != null && Main.files.length > 0) {
-		
-			dialogOpenFileBox = new JComboBox<File>(Main.files);
-			
-			dialogOpenFileConfirm = new JButton(Settings.localize("BTN_OK"));
-			dialogOpenFileConfirm.addActionListener(this);
-			
-			dialogOpenFileContent = new JPanel();
-			dialogOpenFileContent.add(dialogOpenFileBox);
-			dialogOpenFileContent.add(dialogOpenFileConfirm);
-			
-			dialogOpenFile = new JDialog(window, Settings.localize("DLG_OPEN_FILE"));
-			dialogOpenFile.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-			dialogOpenFile.add(dialogOpenFileContent);
-			dialogOpenFile.pack();
-			dialogOpenFile.setLocation(center(width, height, dialogOpenFile.getWidth(), dialogOpenFile.getHeight()));
-			dialogOpenFile.setResizable(false);
-			dialogOpenFile.setVisible(true);
-		}
 	}
 	
 	public void dialogSettings() {
@@ -445,23 +546,11 @@ public class GUI implements ActionListener {
 		
 			// PROPERTIES
 		
-		screenplayEditorTitle = new JTextField(25);
-		screenplayEditorTitle.setText(Main.getAttr("title"));
-		
-		screenplayEditorAuthor = new JTextField(25);
-		screenplayEditorAuthor.setText(Main.getAttr("author"));
-		
-		screenplayEditorPropertiesText = new JPanel();
-		screenplayEditorPropertiesText.setLayout(new BoxLayout(screenplayEditorPropertiesText, BoxLayout.Y_AXIS));
-		screenplayEditorPropertiesText.add(screenplayEditorTitle);
-		screenplayEditorPropertiesText.add(Box.createRigidArea(new Dimension(0, 5)));
-		screenplayEditorPropertiesText.add(screenplayEditorAuthor);
-		
 		screenplayEditorPropertiesApply = new JButton(Settings.localize("BTN_APPLY"));
 		screenplayEditorPropertiesApply.addActionListener(this);
 		
 		screenplayEditorProperties = new JPanel();
-		screenplayEditorProperties.add(screenplayEditorPropertiesText);
+		screenplayEditorProperties.add(screenplayProperties(false));
 		screenplayEditorProperties.add(Box.createRigidArea(new Dimension(5, 0)));
 		screenplayEditorProperties.add(screenplayEditorPropertiesApply);
 		screenplayEditorProperties.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5), BorderFactory.createTitledBorder(Settings.localize("PNL_PROPERTIES"))));
@@ -985,7 +1074,7 @@ public class GUI implements ActionListener {
 		
 		String title = "";
 		if (!Main.saved) title += "*";
-		title += Main.getAttr("title") + " - " + Settings.versionStr;
+		title += Main.getAttr("title") + " - " + Settings.VERSION;
 		window.setTitle(title);
 	}
 	
@@ -1417,99 +1506,14 @@ public class GUI implements ActionListener {
 		// confirm creating a new screenplay
 		if (e.getSource().equals(dialogNewScreenplayConfirm)) {
 			
-			if (dialogNewScreenplayFile.getText().matches(Settings.validFilenamePatternXML)) {
-			
-				if (!Main.checkFilename(dialogNewScreenplayFile.getText(), dialogNewScreenplayTitle.getText(), dialogNewScreenplayAuthor.getText())) {
-					
-					// screenplay exists. overwrite?
-					switch (JOptionPane.showOptionDialog(
-							
-						new JDialog(dialogNewScreenplay),
-						Settings.localize("WRN_OVERWRITE"),
-						Settings.localize("DLG_WARNING"),
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE,
-						null,
-						null,
-						2))
-					{
-					
-						case 0:
-							
-							Main.delete(dialogNewScreenplayTitle.getText());
-							
-							if (Main.checkFilename(dialogNewScreenplayFile.getText(), dialogNewScreenplayTitle.getText(), dialogNewScreenplayAuthor.getText())) {
-								
-								dialogNewScreenplay.dispose();
-							}
-							
-							break;
-							
-						default:
-							
-							break;
-					}
-				}
-				
-				else {
-					
-					dialogNewScreenplay.dispose();
-				}
-			}
-			
-			else {
-				
-				error(dialogNewScreenplay, "ERR_INVALID_FILENAME");
-			}
-		}
-		
-		
-		// save current screenplay
-		if (e.getSource().equals(save)) {
-			
-			Main.save();
+			Main.create(screenplayPropertiesTitle.getText(), screenplayPropertiesAuthor.getText());
+			dialogNewScreenplay.dispose();
 		}
 
 		// open dialog to load a screenplay
 		if (e.getSource().equals(open)) {
 			
-			dialogOpenFile();
-		}
-		
-		// confirm loading a screenplay
-		if (e.getSource().equals(dialogOpenFileConfirm)) {
-			
-			if (!Main.saved) {
-				
-				switch (JOptionPane.showOptionDialog(
-						
-					new JDialog(dialogOpenFile),
-					Settings.localize("WRN_UNSAVED_CHANGES"),
-					Settings.localize("DLG_WARNING"),
-					JOptionPane.YES_NO_CANCEL_OPTION,
-					JOptionPane.WARNING_MESSAGE,
-					null,
-					null,
-					2))
-				{
-				
-					case 0:
-						
-						Main.save();
-						break;
-						
-					case 2:
-						
-						return;
-						
-					default:
-						
-						break;
-				}
-			}
-				
-			Main.load((File)dialogOpenFileBox.getSelectedItem());
-			dialogOpenFile.dispose();
+			// TODO
 		}
 		
 		// export the screenplay to a pdf file
@@ -1527,8 +1531,8 @@ public class GUI implements ActionListener {
 		// confirm changes to properties of current screenplay
 		if (e.getSource().equals(screenplayEditorPropertiesApply)) {
 			
-			Main.setAttr("title", screenplayEditorTitle.getText());
-			Main.setAttr("author", screenplayEditorAuthor.getText());
+			Main.setAttr("title", screenplayPropertiesTitle.getText());
+			Main.setAttr("author", screenplayPropertiesAuthor.getText());
 		}
 		
 		// open the screenplay editor

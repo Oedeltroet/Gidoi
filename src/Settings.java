@@ -44,23 +44,28 @@ public class Settings {
 	
 	
 	
-	// paths, patterns and strings
-	public static String versionStr = "Gidoi 0.2 (Beta)";
-	public static String settingsFile = "settings";
-	public static String schemaFile = "screenplay.xsd";
-	public static String tmpFile = "tmp";
-	public static String pathScreenplays = "screenplays/";
-	public static String pathExported = "exported/";
-	public static String pathLogfiles = "logs/";
-	public static String validFilenamePatternXML = "[^./]+\\.xml";
-	public static String urlRepository = "https://github.com/Oedeltroet/Gidoi";
+		// FILES AND PATHS
 	
+	public static final String FILE_SETTINGS = "settings";
+	public static final String FILE_SCHEMA = "screenplay.xsd";
+	public static final String FILE_TMP = "tmp";
+	public static final String PATH_DEFAULT = "./";
+	public static final String PATH_LOGFILES = "logs/";
+	public static String pathScreenplays = PATH_DEFAULT;
+	public static String pathExported = PATH_DEFAULT;
+	
+	
+	
+		// STRINGS
+	
+	public static final String VERSION = "Gidoi 0.2 (Beta)";
+	public static final String URL_REMOTE = "https://github.com/Oedeltroet/Gidoi";
 	public static String[] optionsPlace = {"int.", "ext.", "int./ext."};
 	public static String[] optionsTime = {"day", "night"};
 	
 	
 	
-		// FORMAT SETTINGS
+		// FORMAT
 	
 	public static PDRectangle pageFormat = PDRectangle.LETTER;
 	
