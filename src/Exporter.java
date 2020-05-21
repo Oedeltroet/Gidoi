@@ -12,10 +12,9 @@ import org.w3c.dom.Element;
 
 public class Exporter {
 	
-	private static int fontSize;
+	private static int fontSize, pageNr;
 	private static float x, y, dpi, spacing;
-	private static String filename, text;
-	private static File file;
+	private static String text;
 	private static Calendar today;
 	private static Element[] scenes;
 	private static PDFont font;
@@ -33,6 +32,23 @@ public class Exporter {
 			page = new PDPage(Settings.pageFormat);
 			stream = new PDPageContentStream(document, page);
 			stream.setFont(PDType1Font.COURIER, fontSize);
+			
+			pageNr++;
+			
+			if (Settings.firstPageNumbered || pageNr > 1) {
+				
+				stream.beginText();
+				
+				stream.newLineAtOffset(
+						
+					page.getMediaBox().getWidth() - Settings.pageMarginRight * dpi,
+					page.getMediaBox().getHeight() - Settings.pageNrMarginTop * dpi
+				);
+				
+				stream.showText(pageNr + ".");
+				stream.endText();
+			}
+			
 			y = page.getMediaBox().getHeight() - (Settings.pageMarginTop * dpi) - fontSize;
 		}
 		
@@ -118,6 +134,8 @@ public class Exporter {
 		try {
 		
 			page = new PDPage(Settings.pageFormat);
+			pageNr = 0;
+			
 			stream = new PDPageContentStream(document, page);
 			stream.setFont(PDType1Font.COURIER_BOLD, fontSize);
 			
@@ -253,7 +271,7 @@ public class Exporter {
 	
 	
 
-	public static void exportToPDF() {
+	public static void exportToPDF(File file) {
 		
 		if (Main.currentDocument != null) {
 			
@@ -264,13 +282,6 @@ public class Exporter {
 				// create pdf document
 				document = new PDDocument();
 				
-				// create file and path
-				new File(Settings.pathExported).mkdir();
-				filename = Settings.pathExported + Main.getAttr("title") + ".pdf";
-				file = new File(filename);
-				
-				
-				
 				// properties
 				properties = new PDDocumentInformation();
 				properties.setTitle(Main.getAttr("title"));
@@ -279,13 +290,25 @@ public class Exporter {
 				
 				today = Calendar.getInstance();
 				
-				properties.setCreationDate(
-						
-					file.exists()
+				if (file.exists()) {
 					
-						? PDDocument.load(file).getDocumentInformation().getCreationDate()
-						: today
-				);
+					try {
+						
+						properties.setCreationDate(PDDocument.load(file).getDocumentInformation().getCreationDate());
+					}
+					
+					catch (Exception e) {
+						
+						Main.log(Main.errorLog, e);
+						properties.setCreationDate(today);
+					}
+				}
+				
+				else {
+					
+					properties.setCreationDate(today);
+					file.createNewFile();
+				}
 				
 				properties.setModificationDate(today);
 				document.setDocumentInformation(properties);
@@ -336,15 +359,16 @@ public class Exporter {
 				
 				
 				stream.close();
-				document.save(filename);
+				document.save(file);
 				document.close();
 				
-				Main.gui.status.setText("Successfully exported to " + filename);
+				Main.gui.status.setText("Successfully exported to " + file.getName());
 			}
 			
 			catch(Exception e) {
 				
 				Main.log(Main.errorLog, e);
+				Main.gui.status.setText("Export failed.");
 				Main.gui.error(Main.gui.window, "ERR_EXPORT");
 			}
 		}

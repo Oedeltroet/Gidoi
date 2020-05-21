@@ -9,21 +9,17 @@ public class Localisation extends ListResourceBundle {
 		
 		return new String[][] {
 			
-			{"FILE", "File"},
 			{"NEW", "New"},
 			{"SAVE", "Save"},
 			{"OPEN", "Open"},
 			{"EXPORT", "Export"},
 			{"SETTINGS", "Settings"},
-			{"QUIT", "Quit"},
-			{"SCREENPLAY", "Screenplay"},
 			{"SCREENPLAY_EDITOR", "Screenplay Editor"},
 			
 			{"PDF_FILES", "PDF files"},
 			{"XML_FILES", "XML files"},
 			
 			{"DLG_ERROR", "Error"},
-			{"DLG_OPEN_FILE", "Open File"},
 			{"DLG_NEW_ACTION", "New Action"},
 			{"DLG_EDIT_ACTION", "Edit Action"},
 			{"DLG_NEW_CHARACTER", "New Character"},
@@ -55,7 +51,7 @@ public class Localisation extends ListResourceBundle {
 			{"ERR_VALIDATION_FAILED", "An error occured during validation process.\nPlease check the error log and contact the developer."},
 			{"ERR_XML_SCHEMA_FILE", "Due to an error, the XML schema file could not be loaded.\nThis may cause trouble when trying to load screenplays.\nFor further information, please check the error log and contact the developer."},
 			
-			{"WRN_OVERWRITE", "A screenplay with this name already exists.\nWould you like to overwrite it?"},
+			{"WRN_OVERWRITE", "This file already exists. Overwrite?"},
 			{"WRN_UNSAVED_CHANGES", "You have unsaved changes.\nWould you like to save them?"},
 			{"WRN_ARE_YOU_SURE", "Are you sure?"},
 			{"WRN_LOCATION_EXISTS", "A location with this name already exists."},

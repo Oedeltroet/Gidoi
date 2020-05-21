@@ -5,6 +5,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+
 import javax.swing.*;
 import javax.swing.border.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -213,10 +216,22 @@ public class GUI implements ActionListener {
 						}
 					};
 
+					fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
+
+						@Override
+						public void propertyChange(PropertyChangeEvent e) {
+							
+							if (e.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
+								
+								Settings.pathScreenplays = fileChooser.getCurrentDirectory().getPath();
+							}
+						}
+					});
+
 					fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(Settings.localize("XML_FILES"), "xml"));
 					fileChooser.setAcceptAllFileFilterUsed(false);
 					fileChooser.setMultiSelectionEnabled(false);
-					fileChooser.setSelectedFile(new File(Main.getAttr("title") + ".xml"));
+					fileChooser.setSelectedFile(new File(Settings.checkPath(Settings.pathScreenplays), Main.getAttr("title") + ".xml"));
 					
 					switch (fileChooser.showSaveDialog(window)) {
 					
@@ -295,9 +310,22 @@ public class GUI implements ActionListener {
 					}
 				};
 				
+				fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						
+						if (e.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
+							
+							Settings.pathScreenplays = fileChooser.getCurrentDirectory().getPath();
+						}
+					}
+				});
+				
 				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(Settings.localize("XML_FILES"), "xml"));
 				fileChooser.setAcceptAllFileFilterUsed(false);
 				fileChooser.setMultiSelectionEnabled(false);
+				fileChooser.setCurrentDirectory(new File(Settings.checkPath(Settings.pathScreenplays)));
 				
 				switch (fileChooser.showOpenDialog(window)) {
 				
@@ -311,7 +339,75 @@ public class GUI implements ActionListener {
 		});
 		
 		export = new JButton(new ImageIcon(Main.class.getResource("/gfx/export.png")));
-		export.addActionListener(this);
+		export.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				fileChooser = new JFileChooser(Settings.pathScreenplays) {
+					
+					@Override
+					public void approveSelection() {
+						
+						File file = getSelectedFile();
+						
+						if (!getFileFilter().accept(file)) {
+							
+							error(window, "ERR_INVALID_FILENAME");
+							return;
+						}
+						
+						if (getSelectedFile().exists()) {
+							
+							switch (JOptionPane.showOptionDialog(
+									
+								new JDialog(window),
+								Settings.localize("WRN_OVERWRITE"),
+								Settings.localize("DLG_WARNING"),
+								JOptionPane.YES_NO_OPTION,
+								JOptionPane.WARNING_MESSAGE,
+								null,
+								null,
+								2))
+							{
+							
+								case 1: return;
+								default: break;
+							}
+					    }
+						
+						super.approveSelection();
+					}
+				};
+				
+				fileChooser.addPropertyChangeListener(new PropertyChangeListener() {
+
+					@Override
+					public void propertyChange(PropertyChangeEvent e) {
+						
+						if (e.getPropertyName().equals(JFileChooser.DIRECTORY_CHANGED_PROPERTY)) {
+							
+							Settings.pathExport = fileChooser.getCurrentDirectory().getPath();
+						}
+					}
+				});
+
+				fileChooser.setApproveButtonText(Settings.localize("EXPORT"));
+				fileChooser.addChoosableFileFilter(new FileNameExtensionFilter(Settings.localize("PDF_FILES"), "pdf"));
+				fileChooser.setAcceptAllFileFilterUsed(false);
+				fileChooser.setMultiSelectionEnabled(false);
+				fileChooser.setSelectedFile(new File(Settings.checkPath(Settings.pathExport), Main.getAttr("title") + ".pdf"));
+				
+				switch (fileChooser.showDialog(window, Settings.localize("EXPORT"))) {
+				
+					case JFileChooser.APPROVE_OPTION:
+						
+						Exporter.exportToPDF(fileChooser.getSelectedFile());
+						
+					default: break;
+				}
+			}
+		});
 		
 		settings = new JButton(new ImageIcon(Main.class.getResource("/gfx/settings.png")));
 		settings.addActionListener(this);
@@ -408,6 +504,17 @@ public class GUI implements ActionListener {
 							
 							break;
 					}
+				}
+				
+				try {
+					
+					Main.saveSettings();
+				}
+				
+				catch (Exception exception) {
+					
+					Main.log(Main.errorLog, exception);
+					error(window, "ERR_SAVE_SETTINGS");
 				}
 				
 				e.getWindow().dispose();
@@ -1508,18 +1615,6 @@ public class GUI implements ActionListener {
 			
 			Main.create(screenplayPropertiesTitle.getText(), screenplayPropertiesAuthor.getText());
 			dialogNewScreenplay.dispose();
-		}
-
-		// open dialog to load a screenplay
-		if (e.getSource().equals(open)) {
-			
-			// TODO
-		}
-		
-		// export the screenplay to a pdf file
-		if (e.getSource().equals(export)) {
-			
-			Exporter.exportToPDF();
 		}
 		
 		// open the settings dialog

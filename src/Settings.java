@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -52,7 +53,19 @@ public class Settings {
 	public static final String PATH_DEFAULT = "./";
 	public static final String PATH_LOGFILES = "logs/";
 	public static String pathScreenplays = PATH_DEFAULT;
-	public static String pathExported = PATH_DEFAULT;
+	public static String pathExport = PATH_DEFAULT;
+	
+	public static String checkPath(String path) {
+		
+		File file = new File(path);
+		
+		if (!file.exists() || !file.isDirectory()) {
+			
+			path = PATH_DEFAULT;
+		}
+		
+		return path;
+	}
 	
 	
 	
@@ -63,16 +76,23 @@ public class Settings {
 	public static String[] optionsPlace = {"int.", "ext.", "int./ext."};
 	public static String[] optionsTime = {"day", "night"};
 	
+	public static final String SETTINGS_KEY_LANGUAGE = "lang";
+	public static final String SETTINGS_KEY_PATH_SCREENPLAYS = "p_screenplays";
+	public static final String SETTINGS_KEY_PATH_EXPORT = "p_export";
+	
 	
 	
 		// FORMAT
 	
 	public static PDRectangle pageFormat = PDRectangle.LETTER;
 	
+	public static boolean firstPageNumbered = false;
+	
 	public static float pageMarginTop = 1.0f,
 						pageMarginBottom = 1.0f,
 						pageMarginRight = 1.0f,
 						pageMarginLeft = 1.5f,
+						pageNrMarginTop = 0.5f,
 						sceneHeadingIndentLeft = 0.0f,
 						sceneHeadingIndentRight = 0.0f,
 						characterIndentLeft = 2.0f,

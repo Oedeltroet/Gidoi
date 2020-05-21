@@ -20,7 +20,6 @@ public class Localisation_de extends ListResourceBundle {
 			{"XML_FILES", "XML Dateien"},
 			
 			{"DLG_ERROR", "Fehler"},
-			{"DLG_OPEN_FILE", "Datei öffnen"},
 			{"DLG_NEW_ACTION", "Handlung erstellen"},
 			{"DLG_EDIT_ACTION", "Handlung bearbeiten"},
 			{"DLG_NEW_CHARACTER", "Figur erstellen"},
@@ -52,7 +51,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"ERR_VALIDATION_FAILED", "Bei der Validierung des Drehbuchs ist ein Fehler aufgetreten.\nBitte konsultieren Sie das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_XML_SCHEMA_FILE", "Aufgrund eines Fehlers konnte die XML-Schemadatei nicht geladen werden.\nDies kann beim Laden von Drehbüchern zu unvorhergesehenen Validierungsfehlern führen.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			
-			{"WRN_OVERWRITE", "Ein Drehbuch mit diesem Namen existiert bereits.\nSoll es überschrieben werden?"},
+			{"WRN_OVERWRITE", "Diese Datei existiert bereits. Überschreiben?"},
 			{"WRN_UNSAVED_CHANGES", "Nicht gespeicherte Änderungen gehen verloren.\nSpeichern?"},
 			{"WRN_ARE_YOU_SURE", "Sind Sie sicher?"},
 			{"WRN_LOCATION_EXISTS", "Ein Schauplatz mit diesem Namen existiert bereits."},

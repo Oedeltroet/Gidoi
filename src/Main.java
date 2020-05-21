@@ -280,9 +280,9 @@ public class Main {
 			input.close();
 		}
 		
-		if (settings.containsKey("gl")) {
+		if (settings.containsKey(Settings.SETTINGS_KEY_LANGUAGE)) {
 			
-			Locale language = new Locale((String) settings.get("gl"));
+			Locale language = new Locale((String) settings.get(Settings.SETTINGS_KEY_LANGUAGE));
 			
 			if (Arrays.asList(Settings.languages).contains(language)) {
 				
@@ -290,13 +290,25 @@ public class Main {
 				Locale.setDefault(Settings.language);
 			}
 		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_PATH_SCREENPLAYS)) {
+			
+			Settings.pathScreenplays = (String) settings.get(Settings.SETTINGS_KEY_PATH_SCREENPLAYS);
+		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_PATH_EXPORT)) {
+			
+			Settings.pathExport = (String) settings.get(Settings.SETTINGS_KEY_PATH_EXPORT);
+		}
 	}
 	
 	public static void saveSettings() throws Exception {
 		
 		Properties settings = new Properties();
 		
-		settings.setProperty("gl", Settings.language.toLanguageTag());
+		settings.setProperty(Settings.SETTINGS_KEY_LANGUAGE, Settings.language.toLanguageTag());
+		settings.setProperty(Settings.SETTINGS_KEY_PATH_SCREENPLAYS, Settings.pathScreenplays);
+		settings.setProperty(Settings.SETTINGS_KEY_PATH_EXPORT, Settings.pathExport);
 		
 		FileOutputStream output = new FileOutputStream(settingsFile);
 		
@@ -706,12 +718,10 @@ public class Main {
 		
 		if (!saved) {
 			
-			if (currentFile == null) {
+			if (currentFile != null) {
 				
-				//...
+				saveAs(currentFile);
 			}
-			
-			saveAs(currentFile);
 		}
 	}
 	
