@@ -1,10 +1,7 @@
 import java.io.File;
 import java.util.Locale;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
+import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 
@@ -139,12 +136,6 @@ public class GUI implements ActionListener {
 	
 
 	public GUI() {
-		
-		x = 50;
-		y = 50;
-		
-		width = Settings.width;
-		height = Settings.height;
 		
 		ToolTipManager.sharedInstance().setInitialDelay(Settings.tooltipInitialDelay);
 		ToolTipManager.sharedInstance().setDismissDelay(Settings.tooltipDismissDelay);
@@ -464,12 +455,47 @@ public class GUI implements ActionListener {
 		window = new JFrame(Settings.VERSION);
 		window.setIconImage(Toolkit.getDefaultToolkit().createImage(Main.class.getResource("/gfx/logo.png")));
 		window.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		window.setBounds(x, y, preview.getSize().width, height);
-		window.setMinimumSize(new Dimension(preview.getMinimumSize().width + 32, 100));
+		window.setMinimumSize(new Dimension(preview.getMinimumSize().width + 32, 200));
+		
+		window.setBounds(
+				
+			Settings.windowX,
+			Settings.windowY,
+			Settings.windowWidth,
+			Settings.windowHeight
+		);
+		
+		window.setExtendedState(Settings.windowMaximized);
+		
 		window.add(toolbar, BorderLayout.PAGE_START);
 		window.add(scrollPane);
 		window.add(statusbar, BorderLayout.SOUTH);
 		window.setVisible(true);
+		
+		window.addComponentListener(new ComponentAdapter() {
+			
+			@Override
+			public void componentMoved(ComponentEvent e) {
+				
+				if (window.getExtendedState() != JFrame.MAXIMIZED_BOTH) {
+				
+					Settings.windowX = window.getX();
+					Settings.windowY = window.getY();
+				}
+			}
+			
+			@Override
+			public void componentResized(ComponentEvent e) {
+				
+				Settings.windowMaximized = window.getExtendedState();
+				
+				if (window.getExtendedState() != JFrame.MAXIMIZED_BOTH) {
+					
+					Settings.windowWidth = window.getWidth();
+					Settings.windowHeight = window.getHeight();
+				}
+			}
+		});
 		
 		window.addWindowListener(new WindowAdapter() {
 			
@@ -1217,7 +1243,7 @@ public class GUI implements ActionListener {
 				// int. / ext. (optional but recommended)
 				if (currentScene.getAttributes().getNamedItem("place") != null) {
 					
-					text += currentScene.getAttributes().getNamedItem("place").getTextContent().toUpperCase();
+					text += currentScene.getAttributes().getNamedItem("place").getTextContent().toUpperCase() + " ";
 				}
 				
 				// location (required)

@@ -300,6 +300,31 @@ public class Main {
 			
 			Settings.pathExport = (String) settings.get(Settings.SETTINGS_KEY_PATH_EXPORT);
 		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_GUI_WINDOW_X)) {
+			
+			Settings.windowX = Integer.parseInt((String) settings.get(Settings.SETTINGS_KEY_GUI_WINDOW_X));
+		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_GUI_WINDOW_Y)) {
+			
+			Settings.windowY = Integer.parseInt((String) settings.get(Settings.SETTINGS_KEY_GUI_WINDOW_Y));
+		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_GUI_WINDOW_WIDTH)) {
+			
+			Settings.windowWidth = Integer.parseInt((String) settings.get(Settings.SETTINGS_KEY_GUI_WINDOW_WIDTH));
+		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_GUI_WINDOW_HEIGHT)) {
+			
+			Settings.windowHeight = Integer.parseInt((String) settings.get(Settings.SETTINGS_KEY_GUI_WINDOW_HEIGHT));
+		}
+		
+		if (settings.containsKey(Settings.SETTINGS_KEY_GUI_WINDOW_MAXIMIZED)) {
+			
+			Settings.windowMaximized = Integer.parseInt((String) settings.get(Settings.SETTINGS_KEY_GUI_WINDOW_MAXIMIZED));
+		}
 	}
 	
 	public static void saveSettings() throws Exception {
@@ -309,6 +334,11 @@ public class Main {
 		settings.setProperty(Settings.SETTINGS_KEY_LANGUAGE, Settings.language.toLanguageTag());
 		settings.setProperty(Settings.SETTINGS_KEY_PATH_SCREENPLAYS, Settings.pathScreenplays);
 		settings.setProperty(Settings.SETTINGS_KEY_PATH_EXPORT, Settings.pathExport);
+		settings.setProperty(Settings.SETTINGS_KEY_GUI_WINDOW_X, "" + Settings.windowX);
+		settings.setProperty(Settings.SETTINGS_KEY_GUI_WINDOW_Y, "" + Settings.windowY);
+		settings.setProperty(Settings.SETTINGS_KEY_GUI_WINDOW_WIDTH, "" + Settings.windowWidth);
+		settings.setProperty(Settings.SETTINGS_KEY_GUI_WINDOW_HEIGHT, "" + Settings.windowHeight);
+		settings.setProperty(Settings.SETTINGS_KEY_GUI_WINDOW_MAXIMIZED, "" + Settings.windowMaximized);
 		
 		FileOutputStream output = new FileOutputStream(settingsFile);
 		
@@ -767,6 +797,16 @@ public class Main {
 		}
 	}
 	
+	public static String replaceNewlines(String text) {
+		
+		if (text.contains("\n")) {
+			
+			text = text.replace('\n', ' ');
+		}
+		
+		return text;
+	}
+	
 	
 	
 	public static Element[] getElements(Document document, String name, Element scene) {
@@ -1082,7 +1122,7 @@ public class Main {
 			
 			if (!text.equals(element.getTextContent())) {
 				
-				element.setTextContent(text);
+				element.setTextContent(replaceNewlines(text));
 				
 				unsave();
 				gui.refreshSceneElementList((Element) element.getParentNode());
@@ -1105,7 +1145,7 @@ public class Main {
 				dialogue.setAttribute("wrylies", wrylies);
 			}
 			
-			dialogue.setTextContent(line);
+			dialogue.setTextContent(replaceNewlines(line));
 			
 			try {
 			

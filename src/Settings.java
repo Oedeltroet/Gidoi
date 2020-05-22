@@ -5,14 +5,24 @@ import java.util.ResourceBundle;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 
 public class Settings {
-
-	// window size
-	public static int width = 800;
-	public static int height = 600;
 	
-	// tooltip settings
-	public static int tooltipInitialDelay = 1000;
-	public static int tooltipDismissDelay = 10000;
+	
+	
+		// STRINGS
+	
+	public static final String VERSION = "Gidoi 0.2 (Beta)";
+	public static final String URL_REMOTE = "https://github.com/Oedeltroet/Gidoi";
+	public static String[] optionsPlace = {"int.", "ext.", "int./ext."};
+	public static String[] optionsTime = {"day", "night"};
+	
+	public static final String SETTINGS_KEY_LANGUAGE = "lang";
+	public static final String SETTINGS_KEY_PATH_SCREENPLAYS = "p_screenplays";
+	public static final String SETTINGS_KEY_PATH_EXPORT = "p_export";
+	public static final String SETTINGS_KEY_GUI_WINDOW_X = "window_x";
+	public static final String SETTINGS_KEY_GUI_WINDOW_Y = "window_y";
+	public static final String SETTINGS_KEY_GUI_WINDOW_WIDTH = "window_w";
+	public static final String SETTINGS_KEY_GUI_WINDOW_HEIGHT = "window_h";
+	public static final String SETTINGS_KEY_GUI_WINDOW_MAXIMIZED = "window_m";
 	
 	
 	
@@ -45,6 +55,25 @@ public class Settings {
 	
 	
 	
+		// GUI
+	
+	// window bounds
+	public static final int DEFAULT_WINDOW_X = 50;
+	public static final int DEFAULT_WINDOW_Y = 50;
+	public static final int DEFAULT_WINDOW_WIDTH = 600; //smaller than minimal size
+	public static final int DEFAULT_WINDOW_HEIGHT = 600;
+	public static int windowX = DEFAULT_WINDOW_X;
+	public static int windowY = DEFAULT_WINDOW_Y;
+	public static int windowWidth = DEFAULT_WINDOW_WIDTH;
+	public static int windowHeight = DEFAULT_WINDOW_HEIGHT;
+	public static int windowMaximized = 0;
+	
+	// tooltip settings
+	public static int tooltipInitialDelay = 1000;
+	public static int tooltipDismissDelay = 10000;
+	
+	
+	
 		// FILES AND PATHS
 	
 	public static final String FILE_SETTINGS = "settings";
@@ -66,19 +95,6 @@ public class Settings {
 		
 		return path;
 	}
-	
-	
-	
-		// STRINGS
-	
-	public static final String VERSION = "Gidoi 0.2 (Beta)";
-	public static final String URL_REMOTE = "https://github.com/Oedeltroet/Gidoi";
-	public static String[] optionsPlace = {"int.", "ext.", "int./ext."};
-	public static String[] optionsTime = {"day", "night"};
-	
-	public static final String SETTINGS_KEY_LANGUAGE = "lang";
-	public static final String SETTINGS_KEY_PATH_SCREENPLAYS = "p_screenplays";
-	public static final String SETTINGS_KEY_PATH_EXPORT = "p_export";
 	
 	
 	
