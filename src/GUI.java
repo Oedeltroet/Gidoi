@@ -1,5 +1,6 @@
 import java.io.File;
 import java.util.Locale;
+import java.util.ResourceBundle;
 import java.awt.*;
 import java.awt.event.*;
 import java.beans.PropertyChangeEvent;
@@ -12,11 +13,6 @@ import javax.swing.text.html.*;
 import org.w3c.dom.*;
 
 public class GUI implements ActionListener {
-	
-	public int 		x,
-					y,
-					width,
-					height;
 	
 	public JFrame	window;
 	
@@ -61,11 +57,14 @@ public class GUI implements ActionListener {
 	
 	public JToolBar 	toolbar;
 	
+	public JCheckBox	autoUpdate;
+	
 	public JButton		create,
 						save,
 						open,
 						export,
 						settings,
+						dialogSettingsApply,
 						screenplayEditorButton,
 						addScene,
 						editScene,
@@ -551,9 +550,13 @@ public class GUI implements ActionListener {
 	
 	
 	
-	private Point center(int width, int height, int dialogueWidth, int dialogueHeight) {
+	private Point center(Component child, Component parent) {
 		
-		return new Point(x + width/2 - dialogueWidth/2, y + height/2 - dialogueHeight/2);
+		return new Point(
+				
+			parent.getX() + parent.getWidth() / 2 - child.getWidth() / 2,
+			parent.getY() + parent.getHeight() / 2 - child.getHeight() / 2
+		);
 	}
 	
 	private JPanel screenplayProperties(boolean create) {
@@ -647,35 +650,76 @@ public class GUI implements ActionListener {
 		dialogNewScreenplay.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		dialogNewScreenplay.add(dialogNewScreenplayContent);
 		dialogNewScreenplay.pack();
-		dialogNewScreenplay.setLocation(center(window.getWidth(), window.getHeight(), dialogNewScreenplay.getWidth(), dialogNewScreenplay.getHeight()));
+		dialogNewScreenplay.setLocation(center(dialogNewScreenplay, window));
 		dialogNewScreenplay.setResizable(false);
 		dialogNewScreenplay.setVisible(true);
 	}
 	
 	public void dialogSettings() {
 		
+		dialogSettingsApply = new JButton(Settings.localize("BTN_APPLY"));
+		dialogSettingsApply.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				if (!((Locale) language.getSelectedItem()).equals(Settings.language)) {
+					
+					Settings.language = (Locale) language.getSelectedItem();
+					Locale.setDefault(Settings.language);
+					JOptionPane.setDefaultLocale(Settings.language);
+					Settings.localisation = ResourceBundle.getBundle(Settings.baseBundleName, Settings.language);
+					
+					Main.gui.refreshToolbar();
+					Main.gui.status.setText("Language changed to " + Settings.language.getDisplayLanguage());
+				}
+				
+				if (autoUpdate.isSelected() != Settings.autoUpdate) {
+					
+					Settings.autoUpdate = autoUpdate.isSelected();
+				}
+				
+				dialogSettings.dispose();
+			}
+		});
+		
 		language = new JComboBox<Locale>();
 		language.setRenderer(new LocaleCellRenderer());
-		language.addItemListener(new LanguageSelectionListener());
+		language.setMaximumSize(new Dimension(200, 25));
 		
 		refreshLanguageList();
 		
+		autoUpdate = new JCheckBox(Settings.localize("BTN_AUTO_UPDATE"));
+		autoUpdate.setToolTipText(Settings.localize("TT_SETTINGS_AUTO_UPDATE"));
+		autoUpdate.setAlignmentX(.5f);
+		autoUpdate.setSelected(Settings.autoUpdate);
+		
 		generalSettingsTab = new JPanel();
+		generalSettingsTab.setLayout(new BoxLayout(generalSettingsTab, BoxLayout.Y_AXIS));
+		generalSettingsTab.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 10));
+		generalSettingsTab.add(Box.createHorizontalGlue());
 		generalSettingsTab.add(language);
+		generalSettingsTab.add(Box.createRigidArea(new Dimension(0, 10)));
+		generalSettingsTab.add(autoUpdate);
+		generalSettingsTab.add(Box.createRigidArea(new Dimension(0, 10)));
+		generalSettingsTab.add(dialogSettingsApply);
 		
 		dialogSettingsTabs = new JTabbedPane();
 		dialogSettingsTabs.addTab(Settings.localize("TAB_GENERAL"), generalSettingsTab);
+		dialogSettingsTabs.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 		
 		dialogSettings = new JDialog(window, Settings.localize("DLG_SETTINGS"));
 		dialogSettings.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		dialogSettings.add(dialogSettingsTabs);
 		dialogSettings.pack();
-		dialogSettings.setLocation(center(width, height, dialogSettings.getWidth(), dialogSettings.getHeight()));
+		dialogSettings.setLocation(center(dialogSettings, window));
 		dialogSettings.setResizable(false);
 		dialogSettings.setVisible(true);
 	}
 	
 	public void screenplayEditor() {
+		
+		
 		
 			// PROPERTIES
 		
@@ -817,8 +861,9 @@ public class GUI implements ActionListener {
 		
 		refreshScreenplayEditor();
 		
-		screenplayEditor.setLocation(center(width, height, screenplayEditor.getWidth(), screenplayEditor.getHeight()));
-		screenplayEditor.setResizable(false);
+		screenplayEditor.setMinimumSize(screenplayEditor.getSize());
+		screenplayEditor.setLocation(center(screenplayEditor, window));
+		screenplayEditor.setResizable(true);
 		screenplayEditor.setVisible(true);
 	}
 	
@@ -883,8 +928,10 @@ public class GUI implements ActionListener {
 
 		refreshSceneEditor();
 		
-		sceneEditor.setLocation(center(width, height, sceneEditor.getWidth(), sceneEditor.getHeight()));
-		sceneEditor.setResizable(false);
+		sceneEditor.setMinimumSize(sceneEditor.getSize());
+		sceneEditor.setSize(new Dimension());
+		sceneEditor.setLocation(center(sceneEditor, screenplayEditor));
+		sceneEditor.setResizable(true);
 		sceneEditor.setVisible(true);
 	}
 	
@@ -894,7 +941,7 @@ public class GUI implements ActionListener {
 		dialogAddScene.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		dialogAddScene.add(sceneProperties(null));
 		dialogAddScene.pack();
-		dialogAddScene.setLocation(center(width, height, dialogAddScene.getWidth(), dialogAddScene.getHeight()));
+		dialogAddScene.setLocation(center(dialogAddScene, screenplayEditor));
 		dialogAddScene.setResizable(false);
 		dialogAddScene.setVisible(true);
 	}
@@ -925,7 +972,7 @@ public class GUI implements ActionListener {
 	dialogAddLocationOrCharacter.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 	dialogAddLocationOrCharacter.add(dialogAddLocationOrCharacterContent);
 	dialogAddLocationOrCharacter.pack();
-	dialogAddLocationOrCharacter.setLocation(center(width, height, dialogAddLocationOrCharacter.getWidth(), dialogAddLocationOrCharacter.getHeight()));
+	dialogAddLocationOrCharacter.setLocation(center(dialogAddLocationOrCharacter, screenplayEditor));
 	dialogAddLocationOrCharacter.setResizable(false);
 	dialogAddLocationOrCharacter.setVisible(true);
 }
@@ -1050,7 +1097,7 @@ public class GUI implements ActionListener {
 		dialogSceneElement.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 		dialogSceneElement.add(dialogAddSceneElementContent);
 		dialogSceneElement.pack();
-		dialogSceneElement.setLocation(center(width, height, dialogSceneElement.getSize().width, dialogSceneElement.getSize().height));
+		dialogSceneElement.setLocation(center(dialogSceneElement, sceneEditor));
 		dialogSceneElement.setResizable(false);
 		dialogSceneElement.setVisible(true);
 	}
@@ -1585,10 +1632,8 @@ public class GUI implements ActionListener {
 	
 	public void refreshLanguageList() {
 		
-		((LanguageSelectionListener) language.getItemListeners()[0]).setEnabled(false);
 		language.setModel(new DefaultComboBoxModel<Locale>(Settings.languages));
 		language.setSelectedItem(Settings.language);
-		((LanguageSelectionListener) language.getItemListeners()[0]).setEnabled(true);
 	}
 	
 	public void refreshSceneList() {

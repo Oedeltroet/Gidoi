@@ -61,6 +61,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"BTN_ADD_ACTION", "Handlung"},
 			{"BTN_ADD_DIALOGUE", "Dialog"},
 			{"BTN_APPLY", "Anwenden"},
+			{"BTN_AUTO_UPDATE", "Automatische Updates"},
 			{"BTN_EDIT", "Bearbeiten"},
 			{"BTN_OK", "OK"},
 			{"BTN_REMOVE", "Entfernen"},
@@ -79,6 +80,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"DFT_LOCATION", "Neuer Schauplatz"},
 			{"DFT_TITLE", "Neues Drehbuch"},
 			
+			{"TT_SETTINGS_AUTO_UPDATE", "Soll das Programm beim Start automatisch nach Updates suchen und Sie benachrichtigen, wenn eines verfügbar ist?"},
 			{"TT_PROPERTIES_TITLE", "Geben Sie hier den Titel des Drehbuchs an. Sie können ihn nachträglich ändern."},
 			{"TT_PROPERTIES_AUTHOR", "Geben Sie hier den Namen des Drehbuchautors an. Sie können ihn nachträglich ändern."},
 			{"TT_PROPERTIES_FILENAME", "Geben Sie hier den Dateinamen an. Beachten Sie, dass dieser weder Punkte noch Schrägstriche enthalten darf und auf '.xml' enden muss."},

@@ -61,6 +61,7 @@ public class Localisation extends ListResourceBundle {
 			{"BTN_ADD_ACTION", "Add Action"},
 			{"BTN_ADD_DIALOGUE", "Add Dialogue"},
 			{"BTN_APPLY", "Apply"},
+			{"BTN_AUTO_UPDATE", "Automatic Updates"},
 			{"BTN_EDIT", "Edit"},
 			{"BTN_OK", "OK"},
 			{"BTN_REMOVE", "Remove"},
@@ -79,6 +80,7 @@ public class Localisation extends ListResourceBundle {
 			{"DFT_LOCATION", "New Location"},
 			{"DFT_TITLE", "New Screenplay"},
 			
+			{"TT_SETTINGS_AUTO_UPDATE", "If selected, the program will automatically check for updates on startup and, if available, give the user the option to install them."},
 			{"TT_PROPERTIES_TITLE", "Choose a title for this screenplay. It can be changed later."},
 			{"TT_PROPERTIES_AUTHOR", "Set the name of the author of this screenplay. It can be changed later."},
 			{"TT_PROPERTIES_FILENAME", "Choose a name for the screenplay file. Note that it may not contain periods or shlashes and the extension must be '.xml'"},

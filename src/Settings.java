@@ -16,6 +16,7 @@ public class Settings {
 	public static String[] optionsTime = {"day", "night"};
 	
 	public static final String SETTINGS_KEY_LANGUAGE = "lang";
+	public static final String SETTINGS_KEY_AUTO_UPDATE = "auto_update";
 	public static final String SETTINGS_KEY_PATH_SCREENPLAYS = "p_screenplays";
 	public static final String SETTINGS_KEY_PATH_EXPORT = "p_export";
 	public static final String SETTINGS_KEY_GUI_WINDOW_X = "window_x";
@@ -23,6 +24,12 @@ public class Settings {
 	public static final String SETTINGS_KEY_GUI_WINDOW_WIDTH = "window_w";
 	public static final String SETTINGS_KEY_GUI_WINDOW_HEIGHT = "window_h";
 	public static final String SETTINGS_KEY_GUI_WINDOW_MAXIMIZED = "window_m";
+	
+	
+	
+		// UPDATE
+	
+	public static boolean autoUpdate = true;
 	
 	
 	

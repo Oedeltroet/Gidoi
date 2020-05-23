@@ -40,7 +40,9 @@ public class Main {
 		
 		
 			// SPLASHSCREEN
+		
 		splash = new Splashscreen();
+		
 		
 		
 			// TMP FILES
@@ -200,7 +202,10 @@ public class Main {
 		
 			// UPDATE
 		
-		if (Updater.check()) gui.dialogUpdate();
+		if (Settings.autoUpdate) {
+			
+			if (Updater.check()) gui.dialogUpdate();
+		}
 	}
 	
 	
@@ -291,6 +296,11 @@ public class Main {
 			}
 		}
 		
+		if (settings.containsKey(Settings.SETTINGS_KEY_AUTO_UPDATE)) {
+			
+			Settings.autoUpdate = Boolean.parseBoolean((String) settings.get(Settings.SETTINGS_KEY_AUTO_UPDATE));
+		}
+		
 		if (settings.containsKey(Settings.SETTINGS_KEY_PATH_SCREENPLAYS)) {
 			
 			Settings.pathScreenplays = (String) settings.get(Settings.SETTINGS_KEY_PATH_SCREENPLAYS);
@@ -332,6 +342,7 @@ public class Main {
 		Properties settings = new Properties();
 		
 		settings.setProperty(Settings.SETTINGS_KEY_LANGUAGE, Settings.language.toLanguageTag());
+		settings.setProperty(Settings.SETTINGS_KEY_AUTO_UPDATE, "" + Settings.autoUpdate);
 		settings.setProperty(Settings.SETTINGS_KEY_PATH_SCREENPLAYS, Settings.pathScreenplays);
 		settings.setProperty(Settings.SETTINGS_KEY_PATH_EXPORT, Settings.pathExport);
 		settings.setProperty(Settings.SETTINGS_KEY_GUI_WINDOW_X, "" + Settings.windowX);
