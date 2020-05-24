@@ -11,7 +11,6 @@ Just click on _Gidoi.jar_ and the application should initialize itself. This may
 ## Getting started
 * After the first startup, you should see the main window containing a blank preview area at the center as well as a toolbar at the top and a status bar at the bottom. The root directory should contain the following:
   * _logs_ - a directory containing the logfiles _error.txt_ and _validation.txt_
-  * _screenplays_ - the directory in which your screenplays will be stored as _.xml_ files
   * _screenplay.xsd_ - the xml schema for your screenplays
   * _settings_ - the file in which the user settings are stored
 

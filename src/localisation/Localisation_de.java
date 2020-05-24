@@ -16,11 +16,13 @@ public class Localisation_de extends ListResourceBundle {
 			{"SETTINGS", "Einstellungen"},
 			{"SCREENPLAY_EDITOR", "Drehbucheditor"},
 			
+			{"PDF_FILES", "PDF Dateien"},
+			{"XML_FILES", "XML Dateien"},
+			
 			{"DLG_ERROR", "Fehler"},
-			{"DLG_OPEN_FILE", "Datei öffnen"},
 			{"DLG_NEW_ACTION", "Handlung erstellen"},
 			{"DLG_EDIT_ACTION", "Handlung bearbeiten"},
-			{"DLG_NEW_CHARACTER", "Charakter erstellen"},
+			{"DLG_NEW_CHARACTER", "Figur erstellen"},
 			{"DLG_NEW_DIALOGUE", "Dialog erstellen"},
 			{"DLG_EDIT_DIALOGUE", "Dialog bearbeiten"},
 			{"DLG_NEW_LOCATION", "Schauplatz erstellen"},
@@ -37,7 +39,7 @@ public class Localisation_de extends ListResourceBundle {
 			{"ERR_EXPORT", "Beim Exportvorgang ist ein Fehler aufgetreten.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_INIT", "Bei der Initialisierung der Anwendung ist ein Fehler aufgetreten.\nBitte konsultieren Sie das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_INSERT_SCENE", "Aufgrund eines Fehlers konnte die erstellte Szene nicht richtig eingefügt werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
-			{"ERR_INVALID_FILE", "Diese Datei ist fehlerhaft.\nFür weitere Informationen konsultieren Sie bitte das Validierungsprotokoll."},
+			{"ERR_INVALID_FILE", "Diese Datei hat kein gültiges Format.\nFür weitere Informationen konsultieren Sie bitte das Validierungsprotokoll."},
 			{"ERR_INVALID_FILENAME", "Bitte geben Sie einen gültigen Dateinamen an."},
 			{"ERR_LOAD_SCREENPLAY", "Aufgrund eines Fehlers konnte das Drehbuch nicht geladen werden.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_LOAD_SETTINGS", "Aufgrund eines Fehlers konnten keine benutzerdefinierten Einstellungen geladen werden.\nVergewissern Sie sich, dass eine Datei mit dem Namen 'settings' im Hauptverzeichnis existiert.\nWenn das der Fall ist, konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
@@ -49,16 +51,17 @@ public class Localisation_de extends ListResourceBundle {
 			{"ERR_VALIDATION_FAILED", "Bei der Validierung des Drehbuchs ist ein Fehler aufgetreten.\nBitte konsultieren Sie das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			{"ERR_XML_SCHEMA_FILE", "Aufgrund eines Fehlers konnte die XML-Schemadatei nicht geladen werden.\nDies kann beim Laden von Drehbüchern zu unvorhergesehenen Validierungsfehlern führen.\nFür weitere Informationen konsultieren Sie bitte das Fehlerprotokoll und wenden Sie sich an den Entwickler."},
 			
-			{"WRN_OVERWRITE", "Ein Drehbuch mit diesem Namen existiert bereits.\nSoll es überschrieben werden?"},
+			{"WRN_OVERWRITE", "Diese Datei existiert bereits. Überschreiben?"},
 			{"WRN_UNSAVED_CHANGES", "Nicht gespeicherte Änderungen gehen verloren.\nSpeichern?"},
 			{"WRN_ARE_YOU_SURE", "Sind Sie sicher?"},
 			{"WRN_LOCATION_EXISTS", "Ein Schauplatz mit diesem Namen existiert bereits."},
-			{"WRN_CHARACTER_EXISTS", "Ein Charakter mit diesem Namen existiert bereits."},
+			{"WRN_CHARACTER_EXISTS", "Eine Figur mit diesem Namen existiert bereits."},
 			
 			{"BTN_ADD", "Hinzufügen"},
 			{"BTN_ADD_ACTION", "Handlung"},
 			{"BTN_ADD_DIALOGUE", "Dialog"},
 			{"BTN_APPLY", "Anwenden"},
+			{"BTN_AUTO_UPDATE", "Automatische Updates"},
 			{"BTN_EDIT", "Bearbeiten"},
 			{"BTN_OK", "OK"},
 			{"BTN_REMOVE", "Entfernen"},
@@ -71,12 +74,13 @@ public class Localisation_de extends ListResourceBundle {
 			{"TAB_GENERAL", "Allgemein"},
 			{"TAB_SCENES", "Szenen"},
 			{"TAB_LOCATIONS", "Schauplätze"},
-			{"TAB_CHARACTERS", "Charaktere"},
+			{"TAB_CHARACTERS", "Figuren"},
 			
-			{"DFT_CHARACTER", "Neuer Charakter"},
+			{"DFT_CHARACTER", "Neue Figur"},
 			{"DFT_LOCATION", "Neuer Schauplatz"},
 			{"DFT_TITLE", "Neues Drehbuch"},
 			
+			{"TT_SETTINGS_AUTO_UPDATE", "Soll das Programm beim Start automatisch nach Updates suchen und Sie benachrichtigen, wenn eines verfügbar ist?"},
 			{"TT_PROPERTIES_TITLE", "Geben Sie hier den Titel des Drehbuchs an. Sie können ihn nachträglich ändern."},
 			{"TT_PROPERTIES_AUTHOR", "Geben Sie hier den Namen des Drehbuchautors an. Sie können ihn nachträglich ändern."},
 			{"TT_PROPERTIES_FILENAME", "Geben Sie hier den Dateinamen an. Beachten Sie, dass dieser weder Punkte noch Schrägstriche enthalten darf und auf '.xml' enden muss."},
@@ -100,15 +104,15 @@ public class Localisation_de extends ListResourceBundle {
 			{"TT_REMOVE_LOCATION", "Entfernen Sie den ausgewählten Schauplatz."},
 			{"TT_REMOVE_LOCATION_USED_FOR_SCENE", "Der ausgewählte Schauplatz kann nicht entfernt werden, da er in einer Szene verwendet wird."},
 			{"TT_REMOVE_LOCATION_NOTHING_SELECTED", "Wählen Sie einen Schauplatz aus, den Sie entfernen möchten."},
-			{"TT_ADD_CHARACTER", "Erstellen Sie einen neuen Charakter."},
-			{"TT_REMOVE_CHARACTER", "Entfernen Sie den ausgewählten Charakter."},
-			{"TT_REMOVE_CHARACTER_USED_FOR_DIALOGUE", "Der ausgewählte Charakter kann nicht entfernt werden - er spricht einen Dialog in Szene "},
-			{"TT_REMOVE_CHARACTER_NOTHING_SELECTED", "Wählen Sie einen Charakter aus, den Sie entfernen möchten."},
+			{"TT_ADD_CHARACTER", "Erstellen Sie eine neue Figur."},
+			{"TT_REMOVE_CHARACTER", "Entfernen Sie die ausgewählte Figur."},
+			{"TT_REMOVE_CHARACTER_USED_FOR_DIALOGUE", "Die ausgewählte Figur kann nicht entfernt werden - sie spricht einen Dialog in Szene "},
+			{"TT_REMOVE_CHARACTER_NOTHING_SELECTED", "Wählen Sie eine Figur aus, die Sie entfernen möchten."},
 			{"TT_CREATE_ACTION_APPEND", "Erstellen Sie eine neue Handlung und fügen Sie sie der Szene hinzu."},
 			{"TT_CREATE_ACTION_INSERT", "Erstellen Sie eine neue Handlung und fügen Sie sie vor dem ausgewählten Element ein."},
 			{"TT_CREATE_DIALOGUE_APPEND", "Erstellen Sie einen neuen Dialog und fügen Sie ihn der Szene hinzu."},
 			{"TT_CREATE_DIALOGUE_INSERT", "Erstellen Sie einen neuen Dialog und fügen Sie ihn vor dem ausgewählten Element ein."},
-			{"TT_CREATE_DIALOGUE_NO_CHARACTER", "Erstellen Sie zunächst einen Charakter."},
+			{"TT_CREATE_DIALOGUE_NO_CHARACTER", "Erstellen Sie zunächst eine Figur."},
 			{"TT_EDIT_ACTION", "Bearbeiten Sie die ausgewählte Handlung."},
 			{"TT_EDIT_DIALOGUE", "Bearbeiten Sie den ausgewählten Dialog."},
 			{"TT_EDIT_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie bearbeiten möchten."},
@@ -119,8 +123,10 @@ public class Localisation_de extends ListResourceBundle {
 			{"TT_MOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie verschieben möchten."},
 			{"TT_REMOVE_SCENE_ELEMENT", "Entfernen Sie das ausgewählte Element aus der Szene."},
 			{"TT_REMOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Wählen Sie ein Szenenelement aus, das Sie entfernen möchten."},
-		
-			{"UPDATE_AVAILABLE", "Ein neues Update ist verfügbar. Soll es installiert werden?"}
+			{"TT_DIALOGUE_CHARACTER", "Wählen Sie eine Figur aus, die diesen Dialog sprechen soll."},
+			{"TT_DIALOGUE_WRYLIES", "Hier können Sie bei Bedarf Anweisungen zur Sprechsweise geben."},
+			
+			{"UPDATE_AVAILABLE", "Ein neues Update ist verfügbar. Soll es jetzt installiert werden?"}
 		};
 	}
 }

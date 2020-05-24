@@ -9,18 +9,17 @@ public class Localisation extends ListResourceBundle {
 		
 		return new String[][] {
 			
-			{"FILE", "File"},
 			{"NEW", "New"},
 			{"SAVE", "Save"},
 			{"OPEN", "Open"},
 			{"EXPORT", "Export"},
 			{"SETTINGS", "Settings"},
-			{"QUIT", "Quit"},
-			{"SCREENPLAY", "Screenplay"},
 			{"SCREENPLAY_EDITOR", "Screenplay Editor"},
 			
+			{"PDF_FILES", "PDF files"},
+			{"XML_FILES", "XML files"},
+			
 			{"DLG_ERROR", "Error"},
-			{"DLG_OPEN_FILE", "Open File"},
 			{"DLG_NEW_ACTION", "New Action"},
 			{"DLG_EDIT_ACTION", "Edit Action"},
 			{"DLG_NEW_CHARACTER", "New Character"},
@@ -40,7 +39,7 @@ public class Localisation extends ListResourceBundle {
 			{"ERR_EXPORT", "An error occurred during export.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_INIT", "An error occured during intialisation.\nPlease check the error log and contact the developer."},
 			{"ERR_INSERT_SCENE", "Due to an error, the created scene could not be inserted correctly.\nFor further information, please check the error log and contact the developer."},
-			{"ERR_INVALID_FILE", "This file is invalid.\nFor further information, please check the validation log."},
+			{"ERR_INVALID_FILE", "The format of this file is invalid.\nFor further information, please check the validation log."},
 			{"ERR_INVALID_FILENAME", "Please enter a valid filename."},
 			{"ERR_LOAD_SCREENPLAY", "Due to an error, the screenplay could not be loaded.\nFor further information, please check the error log and contact the developer."},
 			{"ERR_LOAD_SETTINGS", "Due to an error, user settings could not be loaded.\nMake sure that a file called 'settings' exists in the root directory.\nIf that is the case, please check the error log and contact the developer."},
@@ -52,7 +51,7 @@ public class Localisation extends ListResourceBundle {
 			{"ERR_VALIDATION_FAILED", "An error occured during validation process.\nPlease check the error log and contact the developer."},
 			{"ERR_XML_SCHEMA_FILE", "Due to an error, the XML schema file could not be loaded.\nThis may cause trouble when trying to load screenplays.\nFor further information, please check the error log and contact the developer."},
 			
-			{"WRN_OVERWRITE", "A screenplay with this name already exists.\nWould you like to overwrite it?"},
+			{"WRN_OVERWRITE", "This file already exists. Overwrite?"},
 			{"WRN_UNSAVED_CHANGES", "You have unsaved changes.\nWould you like to save them?"},
 			{"WRN_ARE_YOU_SURE", "Are you sure?"},
 			{"WRN_LOCATION_EXISTS", "A location with this name already exists."},
@@ -62,6 +61,7 @@ public class Localisation extends ListResourceBundle {
 			{"BTN_ADD_ACTION", "Add Action"},
 			{"BTN_ADD_DIALOGUE", "Add Dialogue"},
 			{"BTN_APPLY", "Apply"},
+			{"BTN_AUTO_UPDATE", "Automatic Updates"},
 			{"BTN_EDIT", "Edit"},
 			{"BTN_OK", "OK"},
 			{"BTN_REMOVE", "Remove"},
@@ -80,6 +80,7 @@ public class Localisation extends ListResourceBundle {
 			{"DFT_LOCATION", "New Location"},
 			{"DFT_TITLE", "New Screenplay"},
 			
+			{"TT_SETTINGS_AUTO_UPDATE", "If selected, the program will automatically check for updates on startup and, if available, give the user the option to install them."},
 			{"TT_PROPERTIES_TITLE", "Choose a title for this screenplay. It can be changed later."},
 			{"TT_PROPERTIES_AUTHOR", "Set the name of the author of this screenplay. It can be changed later."},
 			{"TT_PROPERTIES_FILENAME", "Choose a name for the screenplay file. Note that it may not contain periods or shlashes and the extension must be '.xml'"},
@@ -122,8 +123,10 @@ public class Localisation extends ListResourceBundle {
 			{"TT_MOVE_SCENE_ELEMENT_NOTHING_SELECTED", "No scene element selected."},
 			{"TT_REMOVE_SCENE_ELEMENT", "Remove the selected element from the scenen."},
 			{"TT_REMOVE_SCENE_ELEMENT_NOTHING_SELECTED", "Select the scene element you want to remove."},
+			{"TT_DIALOGUE_CHARACTER", "Choose a character for the dialogue."},
+			{"TT_DIALOGUE_WRYLIES", "If required, you can add personal direction (\"wrylies\") here."},
 			
-			{"UPDATE_AVAILABLE", "A new update is available. Would you like it to be installed?"}
+			{"UPDATE_AVAILABLE", "A new update is available. Would you like to install it now?"}
 		};
 	}
 }
