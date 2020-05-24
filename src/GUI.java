@@ -334,7 +334,7 @@ public class GUI implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				
-				fileChooser = new JFileChooser(Settings.pathScreenplays) {
+				fileChooser = new JFileChooser(Settings.pathExport) {
 					
 					@Override
 					public void approveSelection() {

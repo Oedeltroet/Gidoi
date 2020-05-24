@@ -83,6 +83,8 @@ public class Exporter {
 	
 	private static void printTextBlock(String text, float width, boolean dialogue) {
 		
+		text = Main.replaceNewlines(text);
+		
 		Scanner scanner = new Scanner(text);
 		scanner.useDelimiter(" ");
 		

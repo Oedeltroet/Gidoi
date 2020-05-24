@@ -10,7 +10,7 @@ public class Settings {
 	
 		// STRINGS
 	
-	public static final String VERSION = "Gidoi 0.2 (Beta)";
+	public static final String VERSION = "Gidoi 0.3 (Beta)";
 	public static final String URL_REMOTE = "https://github.com/Oedeltroet/Gidoi";
 	public static String[] optionsPlace = {"int.", "ext.", "int./ext."};
 	public static String[] optionsTime = {"day", "night"};
